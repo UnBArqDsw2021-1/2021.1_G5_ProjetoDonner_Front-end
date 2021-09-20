@@ -1,63 +1,35 @@
-# RepositorioTemplate
-Esse repositório é para ser utilizado pelos grupos como um template inicial, da home page do Projeto.
-Demais diretrizes sobre a organização da wiki constam no Moodle Aprender 3.
+# Donner Front-end
+Repositório para o Front-end do projeto Donner da disciplina de Desenho e Arquitetura de Software
 
-**!! Atenção: Renomeie o seu repositório para (Ano.Semestre)_(Grupo)_(NomeDoProjeto)*. !!** 
-
-**!! *Não coloque os nomes dos alunos no título do repositório*. !!**
-
-**!! *Exemplo de título correto: 2021.1_G1_ProjetoPandora*. !!** 
- 
- (Apague essa seção)
-
-# Nome do Projeto
 
 **Código da Disciplina**: FGA0208<br>
-**Número do Grupo**: XX<br>
+**Número do Grupo**: 05<br>
 
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 15/0007329  | Caio Gabriel Araújo Medeiros |
+| 15/0058462 |  Davi Antônio da Silva Santos |
+| 18/0100840  | Gabriel Azevedo Batalha |
+| 18/0113585 | Hugo Ricardo Souza Bezerra |
+| 18/0113861  | Kleidson Alves Corrêa |
+| 18/0125770 |  Lucas Gabriel Bezerra |
+| 18/0114077 | Lucas Rodrigues Fonseca |
+| 15/0062567 | Marcos Adriano Nery de Abrantes |
+| 19/0048760 | Wellington Jonathan de Souza Rodrigues |
 
 ## Sobre 
-Descreva o seu projeto em linhas gerais. 
-
-## Screenshots Primeira Entrega <<FOCO: DSW(Base)>>
-Adicione 2 ou mais screenshots do projeto em termos de artefatos da Primeira Entrega.
-
-## Vídeo(s) Primeira Entrega <<FOCO: DSW(Base)>>
-Adicione o(s)s vídeo(s) da Primeira Entrega.
-
-## Screenshots Segunda Entrega <<FOCO: DSW(Modelagem)>>
-Adicione 2 ou mais screenshots do projeto em termos de artefatos da Segunda Entrega.
-
-## Vídeo(s) Segunda Entrega <<FOCO: DSW(Modelagem)>>
-Adicione o(s)s vídeo(s) da Segunda Entrega.
-
-## Screenshots Terceira Entrega <<FOCO: DSW(Padrões de Projeto)>>
-Adicione 2 ou mais screenshots do projeto em termos de artefatos da Terceira Entrega.
-
-## Vídeo(s) Terceira Entrega <<FOCO: DSW(Padrões de Projeto)>>
-Adicione o(s)s vídeo(s) da Terceira Entrega.
-
-## Screenshots Quarta Entrega (FINAL) <<FOCOS: Arquitetura & Reutilização de Software & PROJETO FINAL>>
-Adicione 2 ou mais screenshots do projeto em termos de interface e/ou funcionamento.
-
-## Vídeo(s) Quarta Entrega (FINAL) <<FOCOS: Arquitetura & Reutilização de Software & PROJETO FINAL>>
-Adicione o(s)s vídeo(s) da Entrega Final.
+Donner é uma aplicação *mobile* que tem como objetivo conectar pessoas interessadas em fazer doações e pessoas que necessitam dessas doações
 
 ## Descritivo dos Principais Aspectos Técnicos 
-**Principal(is) Metodologia(s) Adotada(s)**: xxxxxx<br>
-**Principais Linguagens Utilizadas e/ou Pretendidas**: xxxxxx<br>
-**Principais Tecnologias Utilizadas e/ou Pretendidas**: xxxxxx<br>
+**Principal(is) Metodologia(s) Adotada(s)**: Scrum e XP (adaptados)
+**Principais Linguagens Utilizadas e/ou Pretendidas**: Dart
+**Principais Tecnologias Utilizadas e/ou Pretendidas**: Flutter
 **Principal(is) Estilo(s) Arquitetural(is) Adotado(s)**: xxxxxx<br>
 
 ## O Projeto está rodando?
 ( ) SIM
-( ) NÃO
+( X ) NÃO
 Se SIM, insira um manual (ou um script) para auxiliar ainda mais os interessados em consultar o projeto.
 
 ## Informações Complementares 
-Quaisquer outras informações sobre seu projeto podem ser descritas nessa seção.
