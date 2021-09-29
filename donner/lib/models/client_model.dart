@@ -1,4 +1,4 @@
-import 'package:donner/widgets/models/user_model.dart';
+import 'package:donner/models/user_model.dart';
 
 class ClientModel extends User {
   String phone;

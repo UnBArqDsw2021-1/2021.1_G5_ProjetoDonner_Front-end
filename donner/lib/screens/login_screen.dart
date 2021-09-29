@@ -56,21 +56,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: AppTextStyles.donnerText,
                     textAlign: TextAlign.center,
                   ),
-                  Container(
-                      margin: const EdgeInsets.symmetric(vertical: 40),
-                      child: btn.getButton(
-                        height: 50,
-                        width: 310,
-                        icon: const Icon(
-                          FontAwesomeIcons.google,
-                          color: AppColors.primary,
-                        ),
-                        text: 'Entrar com a conta Google',
-                        color: AppColors.backgroundColor,
-                        textStyle: AppTextStyles.bodyText,
-                        onPressed: () {},
-                        isFill: true,
-                      )),
+                  FutureBuilder(
+                      future: controller.initializeFirebase(),
+                      builder: (context, snapshot) {
+                        return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 40),
+                            child: btn.getButton(
+                              height: 50,
+                              width: 310,
+                              icon: const Icon(
+                                FontAwesomeIcons.google,
+                                color: AppColors.primary,
+                              ),
+                              text: 'Entrar com a conta Google',
+                              color: AppColors.backgroundColor,
+                              textStyle: AppTextStyles.bodyText,
+                              onPressed: () async {
+                                User? user = await controller.signInWithGoogle(
+                                    context: context);
+                                print(user!.displayName);
+                              },
+                              isFill: true,
+                            ));
+                      }),
                 ],
               ),
             ),
