@@ -11,12 +11,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Donner',
-      theme: ThemeData(
-      
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(appBar: AppBar(title: const Text('Donner'))),
-    );
+        title: 'Donner',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Container());
   }
 }
+
+
+//  CustomIconButton(
+//               onPressed: () {},
+//               color: AppColors.secondary,
+//               icon: Icon(
+//                 Icons.add,
+//                 color: AppColors.backgroundColor,
+//               ),
+//               text: 'Botão de Ícone',
+//               textStyle: AppTextStyles.btnFillText,
+//             ),

@@ -1,0 +1,2 @@
+# avoid leaking google cloud/firebase keys
+google-services.json
