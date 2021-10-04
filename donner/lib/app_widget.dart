@@ -9,7 +9,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: const LoginScreen(),
-      initialRoute: "/login",
+      initialRoute: "/register",
       routes: {
         "/login": (context) => const LoginScreen(),
         "/register": (context) => const RegisterScreen(),

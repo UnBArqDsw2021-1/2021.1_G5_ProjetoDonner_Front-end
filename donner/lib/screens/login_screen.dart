@@ -73,8 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () async {
                                 await controller.signInWithGoogle(
                                     context: context);
-                                  ? city,
-  }) {
                               },
                               isFill: true,
                             ));
