@@ -1,11 +1,16 @@
-import 'package:donner/widgets/button_widget/custom_icon_button.dart';
-import 'package:donner/widgets/button_widget/custom_text_button.dart';
-
+import 'package:donner/shared/widgets/button_widget/custom_icon_button.dart';
+import 'package:donner/shared/widgets/button_widget/custom_text_button.dart';
 import 'package:flutter/material.dart';
 
 class FactoryButton {
-  Widget getButton( {required String text, required Color color, required TextStyle textStyle,
-      required VoidCallback onPressed, Icon? icon, double height = 50, double width = 200,
+  Widget getButton(
+      {required String text,
+      required Color color,
+      required TextStyle textStyle,
+      required VoidCallback onPressed,
+      Icon? icon,
+      double height = 50,
+      double width = 200,
       required bool isFill}) {
     if (icon != null) {
       return CustomIconButton(

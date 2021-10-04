@@ -1,8 +1,7 @@
-import 'package:donner/auth/login_controller.dart';
-import 'package:donner/themes/app_colors.dart';
-import 'package:donner/themes/app_text_styles.dart';
-import 'package:donner/widgets/button_widget/factory_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:donner/controllers/login_controller.dart';
+import 'package:donner/shared/themes/app_colors.dart';
+import 'package:donner/shared/themes/app_text_styles.dart';
+import 'package:donner/shared/widgets/button_widget/factory_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -72,9 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: AppColors.backgroundColor,
                               textStyle: AppTextStyles.bodyText,
                               onPressed: () async {
-                                User? user = await controller.signInWithGoogle(
+                                await controller.signInWithGoogle(
                                     context: context);
-                                print(user!.displayName);
+                                  ? city,
+  }) {
                               },
                               isFill: true,
                             ));

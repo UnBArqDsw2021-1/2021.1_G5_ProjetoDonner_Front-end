@@ -1,7 +1,9 @@
+import 'package:donner/models/client_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/material.dart';
 
 class LoginController {
   Future<FirebaseApp> initializeFirebase() async {
@@ -10,9 +12,10 @@ class LoginController {
     return firebaseApp;
   }
 
-  Future<User?> signInWithGoogle({required BuildContext context}) async {
+  Future<void> signInWithGoogle({required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
+
     try {
       final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -30,10 +33,19 @@ class LoginController {
             await auth.signInWithCredential(credential);
 
         user = userCredential.user;
+
+        // client.copyWith(
+        //     phone: user!.displayName,
+        //     photoUrl: user.photoURL,
+        //     email: user.email!,
+        //     );
+
       }
     } on FirebaseAuthException catch (err) {
-      print(err);
+      final snackBar = SnackBar(
+        content: Text(err.toString()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    return user;
   }
 }
