@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:donner/models/user_model.dart';
 
 class ClientModel extends User {
@@ -9,16 +11,20 @@ class ClientModel extends User {
   List<dynamic>? announcements;
 
   ClientModel({
+    required name,
+    required email,
     this.phone,
     this.photoUrl,
     this.description,
     this.announcements,
     this.state,
     this.city,
-  }) : super("", "");
+  }) : super(name, email);
 
   Map<String, dynamic> toMap() {
     return {
+      'name': name,
+      'email': email,
       'phone': phone,
       'photoUrl': photoUrl,
       'description': description,
@@ -28,8 +34,12 @@ class ClientModel extends User {
     };
   }
 
+  String toJson() => json.encode(toMap());
+
   factory ClientModel.fromMap(Map<String, dynamic> map) {
     return ClientModel(
+      name: map['name'],
+      email: map['email'],
       phone: map['phone'],
       photoUrl: map['photoUrl'],
       description: map['description'],
@@ -54,6 +64,8 @@ class ClientModel extends User {
     List<dynamic>? announcements,
   }) {
     return ClientModel(
+      name: name ?? super.name,
+      email: email ?? super.email,
       phone: phone ?? this.phone,
       photoUrl: photoUrl ?? this.photoUrl,
       description: description ?? this.description,

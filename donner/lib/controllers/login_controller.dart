@@ -1,4 +1,4 @@
-import 'package:donner/models/client_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
@@ -12,7 +12,7 @@ class LoginController {
     return firebaseApp;
   }
 
-  Future<void> signInWithGoogle({required BuildContext context}) async {
+  Future<User?> signInWithGoogle({required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
@@ -34,12 +34,7 @@ class LoginController {
 
         user = userCredential.user;
 
-        // client.copyWith(
-        //     phone: user!.displayName,
-        //     photoUrl: user.photoURL,
-        //     email: user.email!,
-        //     );
-
+        return user;
       }
     } on FirebaseAuthException catch (err) {
       final snackBar = SnackBar(
@@ -47,5 +42,14 @@ class LoginController {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
+
+  Future<bool> signUp(String uid) async {
+    final userRef =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (userRef.exists) {
+      return true;
+    }
+    return false;
   }
 }

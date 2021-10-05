@@ -1,10 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donner/models/client_model.dart';
-import 'package:donner/models/user_model.dart';
+import 'package:donner/shared/services/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class RegisterController {
-  late ClientModel client = ClientModel();
-  RegisterController();
+  final User user;
+  late ClientModel client = ClientModel(
+    name: user.displayName,
+    email: user.email,
+    photoUrl: user.photoURL,
+  );
+  RegisterController(this.user);
 
   void onChange({
     String? email,
@@ -26,7 +32,7 @@ class RegisterController {
     );
   }
 
-  void saveClient() {
-    print(client.toString());
+  void saveUser(BuildContext context) async {
+    await FirestoreService().addUser(client, user.uid);
   }
 }

@@ -2,6 +2,7 @@ import 'package:donner/controllers/login_controller.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/button_widget/factory_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -70,13 +71,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               text: 'Entrar com a conta Google',
                               color: AppColors.backgroundColor,
                               textStyle: AppTextStyles.bodyText,
-                              onPressed: () async {
-                                await controller.signInWithGoogle(
-                                    context: context);
-                                  ? city,
-  }) {
-                              },
                               isFill: true,
+                              onPressed: () async {
+                                final User? user = await controller
+                                    .signInWithGoogle(context: context);
+
+                                if (user != null) {
+                                  //Mudar o nome da função
+                                  if (await controller.signUp(user.uid)) {
+                                    await Navigator.pushReplacementNamed(
+                                      context,
+                                      "/home",
+                                    );
+                                  }
+
+                                  await Navigator.pushReplacementNamed(
+                                    context,
+                                    "/register",
+                                    arguments: user,
+                                  );
+                                }
+                              },
                             ));
                       }),
                 ],

@@ -4,18 +4,20 @@ import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/button_widget/custom_text_button.dart';
 import 'package:donner/shared/widgets/input_dropdown_widget.dart';
 import 'package:donner/shared/widgets/input_text_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:estados_municipios/estados_municipios.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  final User user;
+  const RegisterScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  RegisterController controller = RegisterController();
+  late RegisterController controller;
   late EstadosMunicipiosController local;
   List<String> states = [];
   List<String> cities = [];
@@ -25,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
     local = EstadosMunicipiosController();
+    controller = RegisterController(widget.user);
     listStates();
   }
 
@@ -158,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                           } else {
-                            controller.saveClient();
+                            controller.saveUser(context);
                           }
                         },
                         text: "Confirmar",
