@@ -49,6 +49,19 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
 
+  static final bodyTextBlack = GoogleFonts.inter(
+    fontSize: 16.0,
+    color: AppColors.textTitleColor,
+    fontWeight: FontWeight.w400,
+  );
+
+    static final bodyTextSmall = GoogleFonts.inter(
+    fontSize: 12.0,
+    color: AppColors.secondary,
+    fontWeight: FontWeight.w400,
+  );
+
+
   static final appBarText = GoogleFonts.workSans(
     fontSize: 20.0,
     color: AppColors.backgroundColor,
