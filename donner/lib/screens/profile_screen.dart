@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/info_tile_widget.dart';
@@ -7,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final ClientModel user;
+  const ProfileScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +26,18 @@ class ProfileScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
               child: Icon(
                 FontAwesomeIcons.chevronLeft,
                 color: AppColors.secondary,
                 size: 30,
               )),
-          actions: [
+              //Verificar se o param user é igual ao user logado
+          actions: const [
             Padding(
-              padding: const EdgeInsets.only(right: 20),
+              padding: EdgeInsets.only(right: 20),
               child: Icon(
                 FontAwesomeIcons.edit,
                 color: AppColors.primary,
@@ -40,20 +45,22 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ]),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
                 child: Container(
-                  alignment: Alignment.center,
-                  width: 150,
-                  height: 150,
+                  width: 150.0,
+                  height: 150.0,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: AppColors.stroke,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(user.photoUrl!),
+                    ),
                   ),
                 ),
               ),
@@ -63,7 +70,7 @@ class ProfileScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Lucas Gabriel Bezerra",
+                      user.name,
                       style: AppTextStyles.bodyText,
                     ),
                     const SizedBox(
@@ -83,28 +90,27 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
                 child: Wrap(
                   runSpacing: 10,
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    const InfoTileWidget(
+                    InfoTileWidget(
                       icon: Icon(
                         FontAwesomeIcons.phone,
                         color: AppColors.primary,
                       ),
-                      info: '90000-0000',
+                      info: user.phone!,
                     ),
-                    const InfoTileWidget(
+                    InfoTileWidget(
                       icon: Icon(
                         FontAwesomeIcons.envelope,
                         color: AppColors.primary,
                       ),
-                      info: 'lucasgabrielbezerra@gmail.com',
+                      info: user.email,
                     ),
-                    const InfoTileWidget(
+                    InfoTileWidget(
                       icon: Icon(
                         FontAwesomeIcons.mapMarkerAlt,
                         color: AppColors.primary,
                       ),
-                      info: 'Luziânia - GO',
+                      info: '${user.city} - ${user.state}',
                     ),
                   ],
                 ),
@@ -134,7 +140,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 child: Text(
-                  "Eu quero trancar a matéria de ADS",
+                  user.description!,
                   style: AppTextStyles.cardText,
                 ),
               ),
@@ -162,8 +168,8 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              Expanded(
+                child: SizedBox(
+                height: 125,
                 child: ListView.separated(
                   itemCount: colorCodes.length,
                   scrollDirection: Axis.horizontal,
@@ -180,6 +186,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              ),
+              
             ],
           ),
         ),

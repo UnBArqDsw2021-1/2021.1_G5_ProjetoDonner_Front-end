@@ -21,38 +21,6 @@ class ClientModel extends User {
     this.city,
   }) : super(name, email);
 
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'email': email,
-      'phone': phone,
-      'photoUrl': photoUrl,
-      'description': description,
-      'state': state,
-      'city': city,
-      'announcements': announcements,
-    };
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory ClientModel.fromMap(Map<String, dynamic> map) {
-    return ClientModel(
-      name: map['name'],
-      email: map['email'],
-      phone: map['phone'],
-      photoUrl: map['photoUrl'],
-      description: map['description'],
-      state: map['state'],
-      city: map['city'],
-      announcements: List.from(map['announcements']),
-    );
-  }
-  @override
-  String toString() {
-    return 'ClientModel(name: $name, email: $email, phone: $phone, photoUrl: $photoUrl, description: $description, state: $state, city: $city,announcements: $announcements)';
-  }
-
   ClientModel copyWith({
     String? email,
     String? name,
@@ -74,4 +42,63 @@ class ClientModel extends User {
       announcements: announcements ?? this.announcements,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'photoUrl': photoUrl,
+      'description': description,
+      'state': state,
+      'city': city,
+      'announcements': announcements,
+    };
+  }
+
+  factory ClientModel.fromMap(Map<String, dynamic> map) {
+    return ClientModel(
+      name: map['name'],
+      email: map['email'],
+      phone: map['phone'],
+      photoUrl: map['photoUrl'],
+      description: map['description'],
+      state: map['state'],
+      city: map['city'],
+      announcements: List<dynamic>.from(map['announcements'] ?? []),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ClientModel.fromJson(String source) =>
+      ClientModel.fromMap(json.decode(source));
+
+  @override
+  String toString() {
+    return 'ClientModel(name: $name, email: $email, phone: $phone, photoUrl: $photoUrl, description: $description, state: $state, city: $city, announcements: $announcements)';
+  }
+
+  // @override
+  // bool operator ==(Object other) {
+  //   if (identical(this, other)) return true;
+
+  //   return other is ClientModel &&
+  //     other.phone == phone &&
+  //     other.photoUrl == photoUrl &&
+  //     other.description == description &&
+  //     other.state == state &&
+  //     other.city == city &&
+  //     listEquals(other.announcements, announcements);
+  // }
+
+  // @override
+  // int get hashCode {
+  //   return phone.hashCode ^
+  //     photoUrl.hashCode ^
+  //     description.hashCode ^
+  //     state.hashCode ^
+  //     city.hashCode ^
+  //     announcements.hashCode;
+  // }
 }

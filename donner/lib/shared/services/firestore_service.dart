@@ -8,10 +8,6 @@ class FirestoreService {
   Future addUser(ClientModel client, String uid) async {
     Map<String, dynamic> data = client.toMap();
 
-    await _userCollectionRef
-        .doc(uid)
-        .set(data)
-        .whenComplete(() => print("done"))
-        .catchError((e) => print(e));
+    await _userCollectionRef.doc(uid).set(data).catchError((e) => print(e));
   }
 }

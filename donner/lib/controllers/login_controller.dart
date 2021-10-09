@@ -5,10 +5,19 @@ import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 
+import 'auth_controller.dart';
+
 class LoginController {
-  Future<FirebaseApp> initializeFirebase() async {
+  // acho que essa parte de initialize vai ser removida
+  Future<FirebaseApp> initializeFirebase(
+      {required BuildContext context}) async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
 
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      await Navigator.pushReplacementNamed(context, "/home");
+    }
     return firebaseApp;
   }
 
@@ -44,12 +53,19 @@ class LoginController {
     }
   }
 
-  Future<bool> signUp(String uid) async {
+  //Mudar nome da func
+  Future<bool> alreadySignUp(String uid) async {
     final userRef =
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     if (userRef.exists) {
       return true;
+      // Colocar pra pegar usuario do shared preferences
     }
     return false;
+  }
+
+  Future<void> login(context) async {
+    final auth = AuthController();
+    await auth.currentUser(context);
   }
 }

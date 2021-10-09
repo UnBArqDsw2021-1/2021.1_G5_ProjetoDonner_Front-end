@@ -1,6 +1,9 @@
+import 'package:donner/models/client_model.dart';
 import 'package:donner/screens/home_screen.dart';
 import 'package:donner/screens/login_screen.dart';
+import 'package:donner/screens/profile_screen.dart';
 import 'package:donner/screens/register_screen.dart';
+import 'package:donner/screens/spalsh_scren.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +17,19 @@ class AppWidget extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const LoginScreen(),
-      initialRoute: "/register",
+      initialRoute: "/splash",
       routes: {
+        "/splash": (context) => const SplashScreen(),
+        "/home": (context) => HomeScreen(
+          user: ModalRoute.of(context)!.settings.arguments as ClientModel?,
+        ),
         "/login": (context) => const LoginScreen(),
+        "/profile": (context) => ProfileScreen(
+          user: ModalRoute.of(context)!.settings.arguments as ClientModel,
+        ),
         "/register": (context) => RegisterScreen(
               user: ModalRoute.of(context)!.settings.arguments as User,
             ),
-        "/home": (context) => const HomeScreen(),
       },
     );
   }

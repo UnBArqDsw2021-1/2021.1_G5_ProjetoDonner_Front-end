@@ -1,7 +1,8 @@
+import 'package:donner/controllers/auth_controller.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class RegisterController {
   final User user;
@@ -20,6 +21,7 @@ class RegisterController {
     String? description,
     String? state,
     String? city,
+    List<String>? announcements,
   }) {
     client = client.copyWith(
       name: name,
@@ -29,10 +31,13 @@ class RegisterController {
       description: description,
       state: state,
       city: city,
+      announcements: [],
     );
   }
 
   void saveUser(BuildContext context) async {
+    final authController = AuthController();
     await FirestoreService().addUser(client, user.uid);
+    authController.setUser(context, client);
   }
 }

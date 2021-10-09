@@ -56,44 +56,40 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: AppTextStyles.donnerText,
                     textAlign: TextAlign.center,
                   ),
-                  FutureBuilder(
-                      future: controller.initializeFirebase(),
-                      builder: (context, snapshot) {
-                        return Container(
-                            margin: const EdgeInsets.symmetric(vertical: 40),
-                            child: btn.getButton(
-                              height: 50,
-                              width: 310,
-                              icon: const Icon(
-                                FontAwesomeIcons.google,
-                                color: AppColors.primary,
-                              ),
-                              text: 'Entrar com a conta Google',
-                              color: AppColors.backgroundColor,
-                              textStyle: AppTextStyles.bodyText,
-                              isFill: true,
-                              onPressed: () async {
-                                final User? user = await controller
-                                    .signInWithGoogle(context: context);
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 40),
+                      child: btn.getButton(
+                        height: 50,
+                        width: 310,
+                        icon: const Icon(
+                          FontAwesomeIcons.google,
+                          color: AppColors.primary,
+                        ),
+                        text: 'Entrar com a conta Google',
+                        color: AppColors.backgroundColor,
+                        textStyle: AppTextStyles.bodyText,
+                        isFill: true,
+                        onPressed: () async {
+                          final User? user = await controller.signInWithGoogle(
+                              context: context);
 
-                                if (user != null) {
-                                  //Mudar o nome da função
-                                  if (await controller.signUp(user.uid)) {
-                                    await Navigator.pushReplacementNamed(
-                                      context,
-                                      "/home",
-                                    );
-                                  }
+                          if (user != null) {
+                            //Mudar o nome da função
+                            if (await controller.alreadySignUp(user.uid)) {
+                              await Navigator.pushReplacementNamed(
+                                context,
+                                "/home",
+                              );
+                            }
 
-                                  await Navigator.pushReplacementNamed(
-                                    context,
-                                    "/register",
-                                    arguments: user,
-                                  );
-                                }
-                              },
-                            ));
-                      }),
+                            await Navigator.pushReplacementNamed(
+                              context,
+                              "/register",
+                              arguments: user,
+                            );
+                          }
+                        },
+                      ))
                 ],
               ),
             ),
