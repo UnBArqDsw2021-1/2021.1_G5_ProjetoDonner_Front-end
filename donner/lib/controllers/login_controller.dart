@@ -1,28 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth_controller.dart';
 
 class LoginController {
   // acho que essa parte de initialize vai ser removida
-  Future<FirebaseApp> initializeFirebase(
-      {required BuildContext context}) async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    User? user = FirebaseAuth.instance.currentUser;
+  // Future<void> initializeFirebase({required BuildContext context}) async {
+  //   User? user = _auth.currentUser;
 
-    if (user != null) {
-      await Navigator.pushReplacementNamed(context, "/home");
-    }
-    return firebaseApp;
-  }
+  //   if (user != null) {
+  //     await Navigator.pushReplacementNamed(context, "/home");
+  //   }
+  //   return;
+  // }
 
   Future<User?> signInWithGoogle({required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
+    // final SharedPreferences sharedInstance =
+    //     await SharedPreferences.getInstance();
     User? user;
 
     try {
@@ -39,33 +38,39 @@ class LoginController {
             idToken: _googleSignInAuthentication.idToken,
             accessToken: _googleSignInAuthentication.accessToken);
         final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
+            await _auth.signInWithCredential(credential);
 
         user = userCredential.user;
+        final authController = AuthController();
+        authController.saveUser(user!.uid);
+        print('Singleton:' + authController.numb.toString());
 
         return user;
       }
     } on FirebaseAuthException catch (err) {
-      final snackBar = SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(err.toString()),
+      ));
+    }
+  }
+
+  //Corrigir
+
+  Future<void> signOut(BuildContext context) async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final SharedPreferences sharedInstance =
+        await SharedPreferences.getInstance();
+
+    try {
+      await googleSignIn.signOut();
+      await _auth.signOut();
+      await sharedInstance.remove('user');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error signing out. Try again.'),
+        ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-  }
-
-  //Mudar nome da func
-  Future<bool> alreadySignUp(String uid) async {
-    final userRef =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    if (userRef.exists) {
-      return true;
-      // Colocar pra pegar usuario do shared preferences
-    }
-    return false;
-  }
-
-  Future<void> login(context) async {
-    final auth = AuthController();
-    await auth.currentUser(context);
   }
 }

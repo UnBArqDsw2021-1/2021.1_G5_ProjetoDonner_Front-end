@@ -1,4 +1,6 @@
 import 'package:donner/controllers/login_controller.dart';
+import 'package:donner/models/client_model.dart';
+import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/button_widget/factory_button.dart';
@@ -74,12 +76,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               context: context);
 
                           if (user != null) {
-                            //Mudar o nome da função
-                            if (await controller.alreadySignUp(user.uid)) {
+                            final userDoc =
+                                await FirestoreService().findUser(user.uid);
+                            if (userDoc.exists) {
                               await Navigator.pushReplacementNamed(
-                                context,
-                                "/home",
-                              );
+                                  context, "/home",
+                                  arguments: ClientModel.fromSnapshot(userDoc));
                             }
 
                             await Navigator.pushReplacementNamed(

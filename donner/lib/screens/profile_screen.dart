@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
                 color: AppColors.secondary,
                 size: 30,
               )),
-              //Verificar se o param user é igual ao user logado
+          //Verificar se o param user é igual ao user logado
           actions: const [
             Padding(
               padding: EdgeInsets.only(right: 20),
@@ -169,25 +169,24 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 child: SizedBox(
-                height: 125,
-                child: ListView.separated(
-                  itemCount: colorCodes.length,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.all(10),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 120,
-                      color: colorCodes[index],
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const SizedBox(
-                    width: 15,
+                    height: 125,
+                    child: ListView.separated(
+                      itemCount: colorCodes.length,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.all(10),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: 120,
+                          color: colorCodes[index],
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(
+                        width: 15,
+                      ),
+                    ),
                   ),
-                ),
               ),
-              ),
-              
             ],
           ),
         ),

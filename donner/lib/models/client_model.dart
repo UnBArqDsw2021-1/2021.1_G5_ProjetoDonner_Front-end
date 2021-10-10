@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:donner/models/user_model.dart';
+import 'package:flutter/foundation.dart';
 
 class ClientModel extends User {
   String? phone;
@@ -60,8 +61,8 @@ class ClientModel extends User {
     return ClientModel(
       name: map['name'],
       email: map['email'],
-      phone: map['phone'],
       photoUrl: map['photoUrl'],
+      phone: map['phone'],
       description: map['description'],
       state: map['state'],
       city: map['city'],
@@ -79,26 +80,42 @@ class ClientModel extends User {
     return 'ClientModel(name: $name, email: $email, phone: $phone, photoUrl: $photoUrl, description: $description, state: $state, city: $city, announcements: $announcements)';
   }
 
+  factory ClientModel.fromSnapshot(var snapshot) {
+    return ClientModel(
+      name: snapshot['name'],
+      email: snapshot['email'],
+      photoUrl: snapshot['photoUrl'],
+      phone: snapshot['phone'],
+      description: snapshot['description'],
+      state: snapshot['state'],
+      city: snapshot['city'],
+      announcements: snapshot['announcements'],
+    );
+  }
+
   // @override
   // bool operator ==(Object other) {
   //   if (identical(this, other)) return true;
-
   //   return other is ClientModel &&
-  //     other.phone == phone &&
-  //     other.photoUrl == photoUrl &&
-  //     other.description == description &&
-  //     other.state == state &&
-  //     other.city == city &&
-  //     listEquals(other.announcements, announcements);
+  //       other.name == name &&
+  //       other.email == email &&
+  //       other.phone == phone &&
+  //       other.photoUrl == photoUrl &&
+  //       other.description == description &&
+  //       other.state == state &&
+  //       other.city == city &&
+  //       listEquals(other.announcements, announcements);
   // }
 
   // @override
   // int get hashCode {
-  //   return phone.hashCode ^
-  //     photoUrl.hashCode ^
-  //     description.hashCode ^
-  //     state.hashCode ^
-  //     city.hashCode ^
-  //     announcements.hashCode;
+  //   return name.hashCode ^
+  //       email.hashCode ^
+  //       phone.hashCode ^
+  //       photoUrl.hashCode ^
+  //       description.hashCode ^
+  //       state.hashCode ^
+  //       city.hashCode ^
+  //       announcements.hashCode;
   // }
 }

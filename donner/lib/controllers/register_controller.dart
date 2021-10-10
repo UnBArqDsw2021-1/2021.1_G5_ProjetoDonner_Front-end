@@ -38,6 +38,6 @@ class RegisterController {
   void saveUser(BuildContext context) async {
     final authController = AuthController();
     await FirestoreService().addUser(client, user.uid);
-    authController.setUser(context, client);
+    Navigator.pushReplacementNamed(context, '/home', arguments: client);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:donner/controllers/auth_controller.dart';
+import 'package:donner/controllers/login_controller.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
@@ -25,7 +26,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                 SizedBox(
                   height: 80,
                   child: DrawerHeader(
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     padding: EdgeInsets.zero,
                     child: ListTile(
                       onTap: () async {
@@ -130,7 +131,11 @@ class _SidebarWidgetState extends State<SidebarWidget> {
           Align(
             alignment: Alignment.center,
             child: InkWell(
-              onTap: () {},
+              onTap: () async {
+                await LoginController().signOut(context);
+                setState(() {});
+                Navigator.pushReplacementNamed(context, '/home');
+              },
               child: ListTile(
                 leading: const Icon(
                   Icons.logout,

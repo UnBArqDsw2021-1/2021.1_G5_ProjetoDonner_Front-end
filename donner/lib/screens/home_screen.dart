@@ -1,4 +1,3 @@
-import 'package:donner/controllers/auth_controller.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/widgets/sidebar_widget.dart';
@@ -13,8 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +19,9 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.primary,
       ),
       body: Container(),
-      drawer: SidebarWidget(user: widget.user),
+      drawer: SidebarWidget(
+        user: widget.user,
+      ),
     );
   }
 }

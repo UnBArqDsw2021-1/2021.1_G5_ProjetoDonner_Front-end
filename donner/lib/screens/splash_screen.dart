@@ -7,12 +7,11 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authController = AuthController();
-    authController.currentUser(context);
+    AuthController().currentUser(context);
     return Container(
       width: 70,
       height: 70,
-      color: AppColors.secondary,
+      color: AppColors.backgroundColor,
       child: Center(
         child: Image.asset("assets/mini_logo_donner.png"),
       ),

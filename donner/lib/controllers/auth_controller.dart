@@ -1,24 +1,37 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donner/models/client_model.dart';
+import 'package:donner/shared/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
-  ClientModel? _user;
+  String? _userId;
+  static final AuthController _authController = AuthController._internal();
 
-  get user => _user;
+  factory AuthController() {
+    return _authController;
+  }
 
-  void setUser(BuildContext context, ClientModel? user) {
-    if (user != null) {
-      saveUser(user);
-      Navigator.pushReplacementNamed(context, '/home', arguments: user);
-    }else{
+  AuthController._internal();
+
+  get userId => _userId;
+
+  void setUser(BuildContext context, DocumentSnapshot? userDoc) {
+    if (userDoc != null) {
+      saveUser(userDoc.id);
+
+      Navigator.pushReplacementNamed(context, '/home',
+          arguments: ClientModel.fromSnapshot(userDoc));
+    } else {
       Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
-  Future<void> saveUser(ClientModel user) async {
+  Future<void> saveUser(String userId) async {
     final instance = await SharedPreferences.getInstance();
-    await instance.setString("user", user.toJson());
+    await instance.setString("user", userId);
     return;
   }
 
@@ -28,20 +41,20 @@ class AuthController {
 
     if (instance.containsKey("user")) {
       final json = instance.get("user") as String;
-      setUser(context, ClientModel.fromJson(json));
-      _user = ClientModel.fromJson(json);
+      final userDoc = await FirestoreService().findUser(json);
+      setUser(context, userDoc);
     } else {
       setUser(context, null);
     }
     return;
   }
+  // Future<ClientModel?> userAtual() async {
+  //   final instance = await SharedPreferences.getInstance();
+  //   if (instance.containsKey("user")) {
+  //     final json = instance.get("user") as String;
+  //     _userId = json;
+  //   } else {}
+  //   return _user;
+  // }
 
-  Future<ClientModel?> userAtual() async {
-    final instance = await SharedPreferences.getInstance();
-    if (instance.containsKey("user")) {
-      final json = instance.get("user") as String;
-      _user = ClientModel.fromJson(json);
-    } else {}
-    return _user;
-  }
 }
