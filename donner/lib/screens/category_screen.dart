@@ -1,6 +1,6 @@
-import 'package:donner/themes/app_colors.dart';
-import 'package:donner/themes/app_text_styles.dart';
-import 'package:donner/widgets/category_tile/category_tile.dart';
+import 'package:donner/shared/themes/app_colors.dart';
+import 'package:donner/shared/themes/app_text_styles.dart';
+import 'package:donner/shared/widgets/category_tile/category_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

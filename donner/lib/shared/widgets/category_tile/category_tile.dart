@@ -1,5 +1,5 @@
-import 'package:donner/themes/app_colors.dart';
-import 'package:donner/themes/app_text_styles.dart';
+import 'package:donner/shared/themes/app_colors.dart';
+import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CategoryTile extends StatelessWidget {
