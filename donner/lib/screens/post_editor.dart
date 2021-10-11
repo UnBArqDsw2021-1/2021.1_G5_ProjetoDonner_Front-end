@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/button_widget/factory_button.dart';
+import 'package:donner/shared/widgets/input_dropdown_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -21,22 +22,31 @@ class _PostsEditorState extends State<PostsEditor> {
   String title = "";
   String description = "";
   XFile? image;
+  bool? isDonation;
 
   final FactoryButton btn = FactoryButton();
 
   Future<XFile?> chooseImage() async {
     final ImagePicker _picker = ImagePicker();
-
     return _picker.pickImage(source: ImageSource.gallery);
   }
 
   @override
   Widget build(BuildContext context) {
+    double? containerHeight = 15;
+    double imageHeight = 200;
+
     Widget validCustomButton = btn.getButton(
         text: "Enviar",
         color: AppColors.primary,
         textStyle: AppTextStyles.btnFillText,
-        onPressed: () => print("OK"),
+        onPressed: () {
+          print("title: $title");
+          print("description: $description");
+          print("isDonation: $isDonation");
+          print("image: ${image!.path}");
+          print("OK");
+        },
         isFill: true);
 
     Widget invalidCustomButton = btn.getButton(
@@ -46,12 +56,15 @@ class _PostsEditorState extends State<PostsEditor> {
         onPressed: () {},
         isFill: true);
 
-    Widget customButton = title.isNotEmpty && description.isNotEmpty
+    Widget customButton = title.isNotEmpty &&
+            description.isNotEmpty &&
+            isDonation != null &&
+            image != null
         ? validCustomButton
         : invalidCustomButton;
 
     Widget imageButton = btn.getButton(
-        height: 100,
+        height: imageHeight,
         text: "Escolha imagem",
         color: AppColors.backgroundColor,
         textStyle: AppTextStyles.bodyText,
@@ -65,7 +78,7 @@ class _PostsEditorState extends State<PostsEditor> {
     Widget viewImage = image == null
         ? imageButton
         : SizedBox(
-            height: 200,
+            height: imageHeight,
             child: InkWell(
                 onTap: () async {
                   image = await chooseImage();
@@ -83,11 +96,29 @@ class _PostsEditorState extends State<PostsEditor> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(height: 10),
-              viewImage,
-              Container(height: 10),
+              Container(height: containerHeight),
+              InputDropdownWidget(
+                  onChanged: (value) {
+                    setState(() {
+                      isDonation = value == "doação" ? true : false;
+                    });
+                  },
+                  hint: "Tipo do Post",
+                  items: const <String>["doação", "pedido"],
+                  enable: true),
+              Container(height: containerHeight),
+              InputDropdownWidget(
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  hint: "Categoria",
+                  items: const <String>[],
+                  enable: false),
+              Container(height: containerHeight),
+              Center(child: viewImage),
+              Container(height: containerHeight),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
@@ -96,7 +127,7 @@ class _PostsEditorState extends State<PostsEditor> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              Container(height: 10),
+              Container(height: containerHeight),
               Container(
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.all(10),
@@ -123,7 +154,7 @@ class _PostsEditorState extends State<PostsEditor> {
                           : "Título não pode ser vazio"),
                 ),
               ),
-              Container(height: 10),
+              Container(height: containerHeight),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
@@ -132,7 +163,7 @@ class _PostsEditorState extends State<PostsEditor> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              Container(height: 10),
+              Container(height: containerHeight),
               Container(
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.all(10),
@@ -159,8 +190,8 @@ class _PostsEditorState extends State<PostsEditor> {
                           : "Descrição não pode ser vazia"),
                 ),
               ),
-              Container(height: 10),
-              customButton,
+              Container(height: containerHeight),
+              Center(child: customButton),
             ],
           ),
         ),
