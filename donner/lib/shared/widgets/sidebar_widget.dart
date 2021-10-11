@@ -85,7 +85,9 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   color: AppColors.stroke,
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, "/edit-posts");
+                  },
                   leading: const Icon(
                     FontAwesomeIcons.plusSquare,
                     color: AppColors.secondary,
@@ -98,7 +100,6 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                 ),
                 ListTile(
                   onTap: () {
-                   
                   },
                   leading: const ImageIcon(
                     AssetImage('assets/mini_logo_donner.png'),
