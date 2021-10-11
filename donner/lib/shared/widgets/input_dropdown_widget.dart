@@ -1,4 +1,3 @@
-
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ class InputDropdownWidget extends StatefulWidget {
   final void Function(String? value) onChanged;
   final List<String> items;
   final String hint;
+  final String? currentItem;
 
   InputDropdownWidget({
     Key? key,
@@ -17,6 +17,7 @@ class InputDropdownWidget extends StatefulWidget {
     required this.items,
     this.state,
     required this.enable,
+    this.currentItem,
   }) : super(key: key);
 
   @override
@@ -51,6 +52,7 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
               style: const TextStyle(color: AppColors.backgroundColor)),
         ),
         items: widget.items,
+        selectedItem: widget.currentItem,
       ),
     );
   }

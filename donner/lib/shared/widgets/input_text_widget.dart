@@ -2,19 +2,21 @@ import 'package:donner/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class InputTextWidget extends StatelessWidget {
-  final String label;
+  final String? label;
+  final String? initialValue;
   final Icon? icon;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final void Function(String value) onChanged;
-  const InputTextWidget(
-      {Key? key,
-      required this.label,
-      this.icon,
-      this.validator,
-      this.controller,
-      required this.onChanged})
-      : super(key: key);
+  const InputTextWidget({
+    Key? key,
+    this.label,
+    this.initialValue,
+    this.icon,
+    this.validator,
+    this.controller,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class InputTextWidget extends StatelessWidget {
       onChanged: onChanged,
       controller: controller,
       validator: validator,
+      initialValue: initialValue,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 10),
           prefixIcon: Container(
