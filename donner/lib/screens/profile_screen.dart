@@ -1,16 +1,26 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:donner/controllers/authentication.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/info_tile_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   final ClientModel user;
   const ProfileScreen({Key? key, required this.user}) : super(key: key);
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    
+  }
   @override
   Widget build(BuildContext context) {
     final List<Color> colorCodes = [
@@ -29,25 +39,28 @@ class ProfileScreen extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
               },
-              child: Icon(
+              child: const Icon(
                 FontAwesomeIcons.chevronLeft,
                 color: AppColors.secondary,
                 size: 30,
               )),
-          //Verificar se o param user é igual ao user logado
-          actions: const [
+          actions: (widget.user.id == FirebaseAuth.instance.currentUser!.uid) ?[
             Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: Icon(
-                FontAwesomeIcons.edit,
-                color: AppColors.primary,
-                size: 30,
+              padding: const EdgeInsets.only(right: 20),
+              child: IconButton(
+                onPressed: () {
+                },
+                icon: const Icon(
+                  FontAwesomeIcons.edit,
+                  color: AppColors.primary,
+                  size: 30,
+                ),
               ),
             ),
-          ]),
+          ]: null),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: NetworkImage(user.photoUrl!),
+                      image: NetworkImage(widget.user.photoUrl!),
                     ),
                   ),
                 ),
@@ -70,14 +83,16 @@ class ProfileScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      user.name,
+                      widget.user.name,
                       style: AppTextStyles.bodyText,
                     ),
                     const SizedBox(
                       width: 20,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Authentication().signOut(context);
+                      },
                       child: const Icon(
                         Icons.logout,
                         color: AppColors.primary,
@@ -92,25 +107,25 @@ class ProfileScreen extends StatelessWidget {
                   runSpacing: 10,
                   children: [
                     InfoTileWidget(
-                      icon: Icon(
+                      icon: const Icon(
                         FontAwesomeIcons.phone,
                         color: AppColors.primary,
                       ),
-                      info: user.phone!,
+                      info: widget.user.phone!,
                     ),
                     InfoTileWidget(
-                      icon: Icon(
+                      icon: const Icon(
                         FontAwesomeIcons.envelope,
                         color: AppColors.primary,
                       ),
-                      info: user.email,
+                      info: widget.user.email,
                     ),
                     InfoTileWidget(
-                      icon: Icon(
+                      icon: const Icon(
                         FontAwesomeIcons.mapMarkerAlt,
                         color: AppColors.primary,
                       ),
-                      info: '${user.city} - ${user.state}',
+                      info: '${widget.user.city} - ${widget.user.state}',
                     ),
                   ],
                 ),
@@ -135,12 +150,12 @@ class ProfileScreen extends StatelessWidget {
                       color: AppColors.primary.withOpacity(0.5),
                       blurRadius: 7,
                       spreadRadius: 1.8,
-                      offset: Offset(0, 3),
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
                 child: Text(
-                  user.description!,
+                  widget.user.description!,
                   style: AppTextStyles.cardText,
                 ),
               ),
@@ -169,23 +184,23 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 child: SizedBox(
-                    height: 125,
-                    child: ListView.separated(
-                      itemCount: colorCodes.length,
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.all(10),
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width: 120,
-                          color: colorCodes[index],
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const SizedBox(
-                        width: 15,
-                      ),
+                  height: 125,
+                  child: ListView.separated(
+                    itemCount: colorCodes.length,
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.all(10),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        width: 120,
+                        color: colorCodes[index],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      width: 15,
                     ),
                   ),
+                ),
               ),
             ],
           ),

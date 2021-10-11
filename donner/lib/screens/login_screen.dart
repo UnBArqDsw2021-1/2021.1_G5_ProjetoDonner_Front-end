@@ -1,4 +1,4 @@
-import 'package:donner/controllers/login_controller.dart';
+import 'package:donner/controllers/authentication.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
@@ -16,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  LoginController controller = LoginController();
+  Authentication controller = Authentication();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -72,24 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         textStyle: AppTextStyles.bodyText,
                         isFill: true,
                         onPressed: () async {
-                          final User? user = await controller.signInWithGoogle(
+                           await controller.signInWithGoogle(
                               context: context);
-
-                          if (user != null) {
-                            final userDoc =
-                                await FirestoreService().findUser(user.uid);
-                            if (userDoc.exists) {
-                              await Navigator.pushReplacementNamed(
-                                  context, "/home",
-                                  arguments: ClientModel.fromSnapshot(userDoc));
-                            }
-
-                            await Navigator.pushReplacementNamed(
-                              context,
-                              "/register",
-                              arguments: user,
-                            );
-                          }
                         },
                       ))
                 ],

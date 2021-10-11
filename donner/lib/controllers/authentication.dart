@@ -1,27 +1,14 @@
+import 'package:donner/models/client_model.dart';
+import 'package:donner/shared/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'auth_controller.dart';
-
-class LoginController {
-  // acho que essa parte de initialize vai ser removida
+class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Future<void> initializeFirebase({required BuildContext context}) async {
-  //   User? user = _auth.currentUser;
-
-  //   if (user != null) {
-  //     await Navigator.pushReplacementNamed(context, "/home");
-  //   }
-  //   return;
-  // }
-
-  Future<User?> signInWithGoogle({required BuildContext context}) async {
-    // final SharedPreferences sharedInstance =
-    //     await SharedPreferences.getInstance();
+  Future<void> signInWithGoogle({required BuildContext context}) async {
     User? user;
 
     try {
@@ -41,11 +28,8 @@ class LoginController {
             await _auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        final authController = AuthController();
-        authController.saveUser(user!.uid);
-        print('Singleton:' + authController.numb.toString());
 
-        return user;
+        signUpOrSignIn(user, context);
       }
     } on FirebaseAuthException catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -53,18 +37,49 @@ class LoginController {
       ));
     }
   }
+  Future<void> setUser(BuildContext context, ClientModel? user) async{
+    if (user != null) {
+      
+    } else {
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
 
-  //Corrigir
+  Future<ClientModel?> getUserInfo() async {
+    ClientModel? client;
+    
+    if(_auth.currentUser != null){
+      final userDoc = await FirestoreService().findUser(_auth.currentUser!.uid);
+      client =  ClientModel.fromSnapshot(userDoc);
+    }
+    return client;
+  }
+
+  Future<void> signUpOrSignIn(User? user, BuildContext context) async {
+    if (user != null) {
+      final userDoc = await FirestoreService().findUser(user.uid);
+      if (userDoc.exists) {
+        await Navigator.pushReplacementNamed(
+          context,
+          "/home",
+          arguments: ClientModel.fromSnapshot(userDoc),
+        );
+      } else {
+        await Navigator.pushReplacementNamed(
+          context,
+          "/register",
+          arguments: user,
+        );
+      }
+    }
+  }
 
   Future<void> signOut(BuildContext context) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
-    final SharedPreferences sharedInstance =
-        await SharedPreferences.getInstance();
-
     try {
       await googleSignIn.signOut();
       await _auth.signOut();
-      await sharedInstance.remove('user');
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

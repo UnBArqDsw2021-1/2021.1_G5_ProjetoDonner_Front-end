@@ -17,7 +17,7 @@ class AppWidget extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const LoginScreen(),
-      initialRoute: "/splash",
+      initialRoute: "/home",
       routes: {
         "/splash": (context) => const SplashScreen(),
         "/home": (context) => HomeScreen(

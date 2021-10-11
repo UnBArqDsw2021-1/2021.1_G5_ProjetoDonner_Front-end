@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:donner/models/user_model.dart';
-import 'package:flutter/foundation.dart';
 
 class ClientModel extends User {
   String? phone;
@@ -12,6 +11,7 @@ class ClientModel extends User {
   List<dynamic>? announcements;
 
   ClientModel({
+    required id,
     required name,
     required email,
     this.phone,
@@ -20,9 +20,10 @@ class ClientModel extends User {
     this.announcements,
     this.state,
     this.city,
-  }) : super(name, email);
+  }) : super(name, email, id);
 
   ClientModel copyWith({
+    String? id,
     String? email,
     String? name,
     String? phone,
@@ -33,6 +34,7 @@ class ClientModel extends User {
     List<dynamic>? announcements,
   }) {
     return ClientModel(
+      id: id ?? super.id,
       name: name ?? super.name,
       email: email ?? super.email,
       phone: phone ?? this.phone,
@@ -46,6 +48,7 @@ class ClientModel extends User {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'email': email,
       'phone': phone,
@@ -57,23 +60,23 @@ class ClientModel extends User {
     };
   }
 
-  factory ClientModel.fromMap(Map<String, dynamic> map) {
-    return ClientModel(
-      name: map['name'],
-      email: map['email'],
-      photoUrl: map['photoUrl'],
-      phone: map['phone'],
-      description: map['description'],
-      state: map['state'],
-      city: map['city'],
-      announcements: List<dynamic>.from(map['announcements'] ?? []),
-    );
-  }
+  // factory ClientModel.fromMap(Map<String, dynamic> map) {
+  //   return ClientModel(
+  //     name: map['name'],
+  //     email: map['email'],
+  //     photoUrl: map['photoUrl'],
+  //     phone: map['phone'],
+  //     description: map['description'],
+  //     state: map['state'],
+  //     city: map['city'],
+  //     announcements: List<dynamic>.from(map['announcements'] ?? []),
+  //   );
+  // }
 
   String toJson() => json.encode(toMap());
 
-  factory ClientModel.fromJson(String source) =>
-      ClientModel.fromMap(json.decode(source));
+  // factory ClientModel.fromJson(String source) =>
+  //     ClientModel.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -82,6 +85,7 @@ class ClientModel extends User {
 
   factory ClientModel.fromSnapshot(var snapshot) {
     return ClientModel(
+      id: snapshot['id'],
       name: snapshot['name'],
       email: snapshot['email'],
       photoUrl: snapshot['photoUrl'],
@@ -92,30 +96,4 @@ class ClientModel extends User {
       announcements: snapshot['announcements'],
     );
   }
-
-  // @override
-  // bool operator ==(Object other) {
-  //   if (identical(this, other)) return true;
-  //   return other is ClientModel &&
-  //       other.name == name &&
-  //       other.email == email &&
-  //       other.phone == phone &&
-  //       other.photoUrl == photoUrl &&
-  //       other.description == description &&
-  //       other.state == state &&
-  //       other.city == city &&
-  //       listEquals(other.announcements, announcements);
-  // }
-
-  // @override
-  // int get hashCode {
-  //   return name.hashCode ^
-  //       email.hashCode ^
-  //       phone.hashCode ^
-  //       photoUrl.hashCode ^
-  //       description.hashCode ^
-  //       state.hashCode ^
-  //       city.hashCode ^
-  //       announcements.hashCode;
-  // }
 }

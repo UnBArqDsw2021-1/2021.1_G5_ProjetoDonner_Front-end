@@ -1,8 +1,9 @@
-import 'package:donner/controllers/auth_controller.dart';
-import 'package:donner/controllers/login_controller.dart';
+import 'package:donner/controllers/authentication.dart';
 import 'package:donner/models/client_model.dart';
+import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -29,12 +30,13 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                     margin: const EdgeInsets.symmetric(vertical: 5),
                     padding: EdgeInsets.zero,
                     child: ListTile(
-                      onTap: () async {
+                      onTap: () {
+                        
                         if (widget.user != null) {
-                          await Navigator.pushNamed(context, '/profile',
+                          Navigator.pushNamed(context, '/profile',
                               arguments: widget.user);
                         } else {
-                          await Navigator.pushReplacementNamed(
+                          Navigator.pushReplacementNamed(
                             context,
                             '/login',
                           );
@@ -95,7 +97,9 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   ),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                   
+                  },
                   leading: const ImageIcon(
                     AssetImage('assets/mini_logo_donner.png'),
                     color: AppColors.primary,
@@ -132,9 +136,10 @@ class _SidebarWidgetState extends State<SidebarWidget> {
             alignment: Alignment.center,
             child: InkWell(
               onTap: () async {
-                await LoginController().signOut(context);
-                setState(() {});
-                Navigator.pushReplacementNamed(context, '/home');
+                await Authentication().signOut(context);
+
+                // setState(() {});
+                // Navigator.pushReplacementNamed(context, '/home');
               },
               child: ListTile(
                 leading: const Icon(

@@ -1,11 +1,15 @@
 abstract class User {
+  String _id;
   String name;
   String email;
 
   User(
     this.name,
     this.email,
+    this._id
   );
+
+  get id => _id;
 
   @override
   String toString() => 'User(name: $name, email: $email)';
