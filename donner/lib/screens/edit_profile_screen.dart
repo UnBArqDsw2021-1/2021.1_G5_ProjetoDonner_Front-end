@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:donner/controllers/register_controller.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
@@ -6,9 +8,10 @@ import 'package:donner/shared/widgets/button_widget/custom_text_button.dart';
 import 'package:donner/shared/widgets/input_dropdown_widget.dart';
 import 'package:donner/shared/widgets/input_text_widget.dart';
 import 'package:estados_municipios/estados_municipios.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final ClientModel user;
@@ -20,26 +23,26 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late RegisterController controller;
-  late EstadosMunicipiosController local;
+  EstadosMunicipiosController local = EstadosMunicipiosController();
   List<String> states = [];
   List<String> cities = [];
   String? state;
   String? city;
+  String? _image;
 
   @override
   void initState() {
-    super.initState();
-    local = EstadosMunicipiosController();
-    controller = RegisterController(FirebaseAuth.instance.currentUser!);
+    controller = RegisterController.update(client: widget.user);
     state = widget.user.state;
     city = widget.user.city;
     listCities(state!);
-
     listStates();
+
+    super.initState();
   }
 
   void listStates() async {
-    var allStates = await local.buscaTodosEstados();
+    var allStates = await EstadosMunicipiosController().buscaTodosEstados();
 
     for (var s in allStates) {
       states.add(s.sigla!);
@@ -81,17 +84,47 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Container(
-                  width: 150.0,
-                  height: 150.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(widget.user.photoUrl!),
+                child: Stack(children: [
+                  Container(
+                    width: 150.0,
+                    height: 150.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: (_image == null)
+                            ? NetworkImage(widget.user.photoUrl!)
+                            : FileImage(File(_image!)) as ImageProvider,
+                      ),
                     ),
                   ),
-                ),
+                  Positioned(
+                    bottom: 0,
+                    right: 5,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final image = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery)
+                            .then((file) {
+                          setState(() {
+                            _image = file!.path;
+                          });
+                        });
+                      },
+                      child: Container(
+                          alignment: Alignment.center,
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: AppColors.primary),
+                          child: Icon(
+                            FontAwesomeIcons.camera,
+                            color: AppColors.backgroundColor,
+                            size: 20,
+                          )),
+                    ),
+                  ),
+                ]),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
@@ -120,14 +153,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       Row(
                         children: [
+                          const Icon(
+                            FontAwesomeIcons.mapMarkerAlt,
+                            color: AppColors.primary,
+                          ),
                           SizedBox(
                               width: size.width * 0.25,
-                              height: 40,
                               child: InputDropdownWidget(
                                 onChanged: (value) {
                                   setState(() {
                                     state = value;
                                     controller.onChange(state: value);
+                                    city = null;
                                     listCities(state!);
                                   });
                                 },
@@ -149,7 +186,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             items: cities,
                             state: state,
                             enable: state != null ? true : false,
-                            currentItem: widget.user.city!,
+                            currentItem: city,
                           )),
                         ],
                       ),
@@ -169,31 +206,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 thickness: 0.5,
                 color: AppColors.stroke,
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                height: 150,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withOpacity(0.5),
-                      blurRadius: 7,
-                      spreadRadius: 1.8,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Text(
-                  widget.user.description!,
-                  style: AppTextStyles.cardText,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      controller.onChange(description: value);
+                    });
+                  },
+                  maxLength: 500,
+                  maxLines: 8,
+                  decoration: InputDecoration(
+                    hintText: widget.user.description,
+                    hintStyle: AppTextStyles.inputText,
+                    border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        borderSide: BorderSide(color: AppColors.stroke)),
+                    isDense: true,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Center(
                   child: CustomTextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (!cities.contains(city)) {
                         final snackBar = SnackBar(
                           content: Text(
@@ -201,10 +238,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       } else {
-                        controller.updateUser(context);
+                        final updatedClient =
+                            await controller.updateUser(context);
+
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, "/home", ModalRoute.withName('/home'),
+                            arguments: updatedClient);
+                        if(_image!= null){
+                          // Upload da nova imagem no Firebase Storage
+                        }
                       }
                     },
-                    text: "Confirmar",
+                    text: "Atualizar",
                     textStyle: AppTextStyles.btnFillText,
                     color: AppColors.primary,
                     isFill: true,
