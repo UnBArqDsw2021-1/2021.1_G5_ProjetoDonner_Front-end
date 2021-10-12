@@ -11,7 +11,7 @@ import 'package:estados_municipios/estados_municipios.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final ClientModel user;
@@ -28,7 +28,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   List<String> cities = [];
   String? state;
   String? city;
-  String? _image;
+  XFile? _image;
+  var maskFormatter = MaskTextInputFormatter(
+      mask: '## #####-####', filter: {"#": RegExp(r'[0-9]')});
 
   @override
   void initState() {
@@ -94,7 +96,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         fit: BoxFit.cover,
                         image: (_image == null)
                             ? NetworkImage(widget.user.photoUrl!)
-                            : FileImage(File(_image!)) as ImageProvider,
+                            : FileImage(File(_image!.path)) as ImageProvider,
                       ),
                     ),
                   ),
@@ -107,7 +109,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             .pickImage(source: ImageSource.gallery)
                             .then((file) {
                           setState(() {
-                            _image = file!.path;
+                            _image = file;
                           });
                         });
                       },
@@ -136,6 +138,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
               Form(
+                key: controller.formKey,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Wrap(
@@ -147,6 +150,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           color: AppColors.primary,
                         ),
                         initialValue: widget.user.phone!,
+                        keyboardType: TextInputType.phone,
+                        validator: controller.validatePhone,
+                        formatter: [maskFormatter],
                         onChanged: (value) {
                           controller.onChange(phone: value);
                         },
@@ -156,23 +162,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           const Icon(
                             FontAwesomeIcons.mapMarkerAlt,
                             color: AppColors.primary,
+                            size: 30,
                           ),
-                          SizedBox(
-                              width: size.width * 0.25,
-                              child: InputDropdownWidget(
-                                onChanged: (value) {
-                                  setState(() {
-                                    state = value;
-                                    controller.onChange(state: value);
-                                    city = null;
-                                    listCities(state!);
-                                  });
-                                },
-                                hint: "UF",
-                                items: states,
-                                enable: true,
-                                currentItem: widget.user.state!,
-                              )),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: SizedBox(
+                                width: size.width * 0.25,
+                                child: InputDropdownWidget(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      state = value;
+                                      controller.onChange(state: value);
+                                      city = null;
+                                      listCities(state!);
+                                    });
+                                  },
+                                  hint: "UF",
+                                  items: states,
+                                  enable: true,
+                                  currentItem: widget.user.state!,
+                                )),
+                          ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
                           Expanded(
                               child: InputDropdownWidget(
@@ -208,16 +218,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
+                child: TextFormField(
                   onChanged: (value) {
                     setState(() {
                       controller.onChange(description: value);
                     });
                   },
+                  initialValue: widget.user.description!,
                   maxLength: 500,
                   maxLines: 8,
                   decoration: InputDecoration(
-                    hintText: widget.user.description,
                     hintStyle: AppTextStyles.inputText,
                     border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -238,15 +248,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       } else {
-                        final updatedClient =
-                            await controller.updateUser(context);
-
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, "/home", ModalRoute.withName('/home'),
-                            arguments: updatedClient);
-                        if(_image!= null){
-                          // Upload da nova imagem no Firebase Storage
+                        if (_image != null) {
+                          await controller.uploadFile(
+                              _image!.path, widget.user.id);
                         }
+                        controller.registerUser(context, false);
+                        // Navigator.pushNamedAndRemoveUntil(
+                        //     context, "/home", ModalRoute.withName('/home'),
+                        //     arguments: updatedClient);
+                        // Upload da nova imagem no Firebase Storage
+
                       }
                     },
                     text: "Atualizar",

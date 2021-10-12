@@ -26,5 +26,4 @@ class FirestoreService {
         .update(data)
         .catchError((e) => print(e));
   }
- 
 }

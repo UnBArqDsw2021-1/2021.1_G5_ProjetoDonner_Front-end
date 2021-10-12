@@ -54,8 +54,8 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(widget.user!.photoUrl!),
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(widget.user!.photoUrl!)
                                 ),
                               ),
                             ),
