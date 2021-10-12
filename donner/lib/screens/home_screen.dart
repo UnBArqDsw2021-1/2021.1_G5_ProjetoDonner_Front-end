@@ -20,17 +20,24 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: AppColors.primary,
       ),
       body: Container(),
-      drawer: FutureBuilder<ClientModel?>(future: Authentication().getUserInfo() ,builder: (context, snap){
-        if(snap.hasError){
-          return SnackBar(
-            content: Text(snap.error.toString()),
-          );
-        }else{
-           return SidebarWidget(
-            user: snap.data,
-          );
-        }
-      },)
+      drawer: widget.user == null
+          ? FutureBuilder<ClientModel?>(
+              future: Authentication().getUserInfo(),
+              builder: (context, snap) {
+                if (snap.hasError) {
+                  return SnackBar(
+                    content: Text(snap.error.toString()),
+                  );
+                } else {
+                  return SidebarWidget(
+                    user: snap.data,
+                  );
+                }
+              },
+            )
+          : SidebarWidget(
+              user: widget.user,
+            ),
     );
   }
 }

@@ -44,13 +44,15 @@ dependencies:
   firebase_auth: ^3.1.2
   cloud_firestore: ^2.5.3
   google_sign_in: ^5.1.1
-  shared_preferences: ^2.0.8
-
+  firebase_storage: ^10.0.5
+  
   #apis
   #cidades_estados_ibge: ^0.0.7
   estados_municipios: ^2.0.0
   dropdown_search: ^1.0.0
 
+  #gallery
+  image_picker: ^0.8.4+2
 
 dev_dependencies:
   flutter_test:

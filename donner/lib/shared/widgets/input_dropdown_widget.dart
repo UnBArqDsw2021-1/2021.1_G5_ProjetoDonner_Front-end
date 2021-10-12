@@ -28,7 +28,6 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
       child: DropdownSearch<String>(
         onChanged: widget.onChanged,
         enabled: widget.enable,

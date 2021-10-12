@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.only(right: 20),
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(
+                        Navigator.pushNamed(
                           context,
                           "/edit",
                           arguments: widget.user,
