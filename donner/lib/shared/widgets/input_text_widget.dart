@@ -23,7 +23,9 @@ class InputTextWidget extends StatelessWidget {
       controller: controller,
       validator: validator,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 10),
+          contentPadding: icon != null
+              ? const EdgeInsets.symmetric(vertical: 10)
+              : EdgeInsets.symmetric(horizontal: 10),
           prefixIcon: icon != null
               ? Container(
                   margin: const EdgeInsets.only(right: 5),

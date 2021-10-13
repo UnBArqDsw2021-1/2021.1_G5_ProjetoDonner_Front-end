@@ -10,4 +10,8 @@ class CategoryModel{
     category = snapshot.get('category');
     icon = snapshot.get('icon');
   }
+  @override
+  String toString() {
+    return 'CategoryModel(id: $id, category: $category, icon: $icon)';
+  }
 }

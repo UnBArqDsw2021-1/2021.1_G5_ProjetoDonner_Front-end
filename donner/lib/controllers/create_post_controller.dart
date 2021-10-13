@@ -7,17 +7,37 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-
 class CreatePostController {
+  final formKey = GlobalKey<FormState>();
   AnnouncementModel? announcement;
 
-  CreatePostController(String owner){
-    announcement = AnnouncementModel(owner: owner);
+  CreatePostController(String owner) {
+    announcement = AnnouncementModel(
+      owner: owner,
+      id: DateTime.now().millisecondsSinceEpoch.toString() + owner,
+    );
   }
+
+  String? validateTitle(String? value) =>
+      value?.isEmpty ?? true ? "O título não pode ser vazio" : null;
+
+  String? validateDescription(String? value) =>
+      value?.isEmpty ?? true ? "A descrição não pode ser vazia" : null;
+
+  String? validateDonationType(String? value) =>
+      value?.isEmpty ?? true ? "É obrigatório escolher o tipo do post" : null;
+
+  String? validateImages(String? value) => value?.isEmpty ?? true
+      ? "É obrigatório adicionar ao menos uma imagem"
+      : null;
+
+  String? validateCategory(String? value) => value?.isEmpty ?? true
+      ? "É obrigatório vincular o post a uma categoria"
+      : null;
+
   void onChange({
     String? categoryId,
     String? description,
-    String? id,
     bool? isDonation,
     String? title,
     String? images,
@@ -25,23 +45,26 @@ class CreatePostController {
     announcement = announcement!.copyWith(
       categoryId: categoryId,
       description: description,
-      id: id,
       isDonation: isDonation,
       title: title,
       images: images,
     );
   }
 
-  Future uploadFile(String images, String id) async {
+  Future uploadFile(String images) async {
     try {
       final storageRef = FirebaseStorage.instance
           .ref()
-          .child(id)
+          .child(announcement!.id!)
           .child(DateTime.now().millisecondsSinceEpoch.toString());
 
-      final uploadTask = await storageRef.putFile(File(images)).catchError((e)=> SnackBar(content: Text(e.toString())));
-      
-      final url = await storageRef.getDownloadURL().catchError((e)=> SnackBar(content: Text(e.toString())));
+      final uploadTask = await storageRef
+          .putFile(File(images))
+          .catchError((e) => SnackBar(content: Text(e.toString())));
+
+      final url = await storageRef
+          .getDownloadURL()
+          .catchError((e) => SnackBar(content: Text(e.toString())));
       // print("url: $url");
       onChange(images: url);
     } on FirebaseException catch (e) {
@@ -54,9 +77,11 @@ class CreatePostController {
     return _picker.pickImage(source: ImageSource.gallery);
   }
 
-  void savePost(BuildContext context) async {
-    print(announcement.toString());
-    // FirestoreService().addPost(announcement!);
-    // Navigator.pushReplacementNamed(context, "/home");
+  Future<void> savePost(BuildContext context) async {
+    final sucess = await FirestoreService().addPost(announcement!);
+    if (sucess != null)
+      Navigator.pushReplacementNamed(context, "/home");
+    else
+      Navigator.pushReplacementNamed(context, "/home");
   }
 }

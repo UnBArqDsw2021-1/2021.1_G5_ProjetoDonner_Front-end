@@ -34,13 +34,23 @@ class CategoryScreen extends StatelessWidget {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: (){
-                        //Adicionar método para add nova categoria
+                      onTap: () {
+                        Navigator.pop(
+                            context,
+                            CategoryModel.fromDocument(
+                                snapshot.data!.docs[index]));
                       },
-                      child: CategoryTile(
-                          category: CategoryModel.fromDocument(
-                        snapshot.data!.docs[index],
-                      )),
+                      child: Column(
+                        children: [
+                          CategoryTile(
+                              category: CategoryModel.fromDocument(
+                            snapshot.data!.docs[index],
+                          )),
+                          const Divider(
+                            color: AppColors.stroke,
+                          )
+                        ],
+                      ),
                     );
                   },
                 );

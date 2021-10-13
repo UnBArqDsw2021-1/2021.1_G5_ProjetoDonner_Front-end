@@ -7,16 +7,15 @@ import 'package:donner/shared/services/firestore_service.dart';
 class RegisterController {
   final User user;
   ClientModel? client;
-  RegisterController(
-    this.user,
-    {this.client} 
-  ){
-
-    client = ClientModel(id: user.uid, name: user.displayName, email: user.email, photoUrl: user.photoURL);
+  RegisterController(this.user, {this.client}) {
+    client = ClientModel(
+        id: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoUrl: user.photoURL);
   }
 
   void onChange({
-
     String? phone,
     String? description,
     String? state,
