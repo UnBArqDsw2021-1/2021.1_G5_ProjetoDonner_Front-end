@@ -2,14 +2,14 @@ import 'package:donner/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class InputTextWidget extends StatelessWidget {
-  final String label;
+  final String? label;
   final Icon? icon;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final void Function(String value) onChanged;
   const InputTextWidget(
       {Key? key,
-      required this.label,
+      this.label,
       this.icon,
       this.validator,
       this.controller,
@@ -24,14 +24,16 @@ class InputTextWidget extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 10),
-          prefixIcon: Container(
-            margin: const EdgeInsets.only(right: 5),
-            decoration: const BoxDecoration(
-                border: Border(
-              right: BorderSide(color: AppColors.stroke),
-            )),
-            child: icon,
-          ),
+          prefixIcon: icon != null
+              ? Container(
+                  margin: const EdgeInsets.only(right: 5),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                    right: BorderSide(color: AppColors.stroke),
+                  )),
+                  child: icon,
+                )
+              : null,
           enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.stroke)),
           focusedBorder: const OutlineInputBorder(

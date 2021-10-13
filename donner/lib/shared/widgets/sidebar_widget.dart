@@ -31,7 +31,6 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                     padding: EdgeInsets.zero,
                     child: ListTile(
                       onTap: () {
-                        
                         if (widget.user != null) {
                           Navigator.pushNamed(context, '/profile',
                               arguments: widget.user);
@@ -86,7 +85,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, "/edit-posts");
+                    Navigator.pushReplacementNamed(context, "/create_post");
                   },
                   leading: const Icon(
                     FontAwesomeIcons.plusSquare,
@@ -99,8 +98,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   ),
                 ),
                 ListTile(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   leading: const ImageIcon(
                     AssetImage('assets/mini_logo_donner.png'),
                     color: AppColors.primary,

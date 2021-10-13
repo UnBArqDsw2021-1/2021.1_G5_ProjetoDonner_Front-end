@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donner/models/announcement_model.dart';
 import 'package:donner/models/client_model.dart';
 
 class FirestoreService {
   final CollectionReference _userCollectionRef =
       FirebaseFirestore.instance.collection('users');
+      final CollectionReference _postCollectionRef =
+      FirebaseFirestore.instance.collection('posts');
+
 
   Future addUser(ClientModel client, String uid) async {
     Map<String, dynamic> data = client.toMap();
@@ -17,5 +21,18 @@ class FirestoreService {
       return user;
     }
     return user;
+  }
+
+  Future<QuerySnapshot> getCategories() async{
+    final CollectionReference categoriesRef =
+      FirebaseFirestore.instance.collection('categories');
+    
+      return categoriesRef.get();
+  }
+
+    Future addPost(AnnouncementModel announcement) async {
+    Map<String, dynamic> data = announcement.toMap();
+
+    await _userCollectionRef.doc().set(data).catchError((e) => print(e));
   }
 }

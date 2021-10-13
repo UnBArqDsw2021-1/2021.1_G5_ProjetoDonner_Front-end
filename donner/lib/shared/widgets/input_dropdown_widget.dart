@@ -37,7 +37,7 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
           border: const OutlineInputBorder(),
         ),
         mode: Mode.DIALOG,
-        showSearchBox: true,
+        showSearchBox: (widget.items.length > 5),
         popupShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         popupTitle: Container(
