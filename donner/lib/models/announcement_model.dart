@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AnnouncementModel {
   String? id;
   String? title;
@@ -60,7 +62,16 @@ class AnnouncementModel {
       images: map['images'],
     );
   }
-
+  
+  AnnouncementModel.fromDocument(DocumentSnapshot snapshot){
+    id = snapshot.get('id');
+    title = snapshot.get('title');
+    description = snapshot.get('description');
+    owner = snapshot.get('owner');
+    images = snapshot.get('images');
+    categoryId = snapshot.get('categoryId');
+    isDonation = snapshot.get('isDonation');
+  }
   String toJson() => json.encode(toMap());
 
   factory AnnouncementModel.fromJson(String source) =>
@@ -69,30 +80,5 @@ class AnnouncementModel {
   @override
   String toString() {
     return 'AnnouncementModel(categoryId: $categoryId, description: $description, id: $id, isDonation: $isDonation, owner: $owner, title: $title, images: $images)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is AnnouncementModel &&
-        other.categoryId == categoryId &&
-        other.description == description &&
-        other.id == id &&
-        other.isDonation == isDonation &&
-        other.owner == owner &&
-        other.title == title &&
-        other.images == images;
-  }
-
-  @override
-  int get hashCode {
-    return categoryId.hashCode ^
-        description.hashCode ^
-        id.hashCode ^
-        isDonation.hashCode ^
-        owner.hashCode ^
-        title.hashCode ^
-        images.hashCode;
   }
 }

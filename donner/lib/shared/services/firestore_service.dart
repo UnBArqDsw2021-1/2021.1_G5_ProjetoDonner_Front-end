@@ -37,4 +37,11 @@ class FirestoreService {
         .set(data)
         .catchError((e) => print(e));
   }
+
+  Future<QuerySnapshot> getAnnouncements() async {
+    final CollectionReference announcementsRef =
+        FirebaseFirestore.instance.collection('posts');
+
+    return announcementsRef.get();
+  }
 }
