@@ -37,9 +37,9 @@ class Authentication {
       ));
     }
   }
-  Future<void> setUser(BuildContext context, ClientModel? user) async{
+
+  Future<void> setUser(BuildContext context, ClientModel? user) async {
     if (user != null) {
-      
     } else {
       Navigator.pushReplacementNamed(context, '/home');
     }
@@ -47,10 +47,10 @@ class Authentication {
 
   Future<ClientModel?> getUserInfo() async {
     ClientModel? client;
-    
-    if(_auth.currentUser != null){
+
+    if (_auth.currentUser != null) {
       final userDoc = await FirestoreService().findUser(_auth.currentUser!.uid);
-      client =  ClientModel.fromSnapshot(userDoc);
+      client = ClientModel.fromSnapshot(userDoc);
     }
     return client;
   }

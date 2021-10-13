@@ -18,4 +18,12 @@ class FirestoreService {
     }
     return user;
   }
+
+  Future updateUser({required ClientModel user}) async {
+    Map<String, dynamic> data = user.toMap();
+    await _userCollectionRef
+        .doc(user.id)
+        .update(data)
+        .catchError((e) => print(e));
+  }
 }

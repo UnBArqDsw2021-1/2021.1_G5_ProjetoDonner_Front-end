@@ -19,8 +19,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    
   }
+
   @override
   Widget build(BuildContext context) {
     final List<Color> colorCodes = [
@@ -44,20 +44,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: AppColors.secondary,
                 size: 30,
               )),
-          actions: (widget.user.id == FirebaseAuth.instance.currentUser!.uid) ?[
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: IconButton(
-                onPressed: () {
-                },
-                icon: const Icon(
-                  FontAwesomeIcons.edit,
-                  color: AppColors.primary,
-                  size: 30,
-                ),
-              ),
-            ),
-          ]: null),
+          actions: (widget.user.id == FirebaseAuth.instance.currentUser!.uid)
+              ? [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          "/edit",
+                          arguments: widget.user,
+                        );
+                      },
+                      icon: const Icon(
+                        FontAwesomeIcons.edit,
+                        color: AppColors.primary,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ]
+              : null),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -71,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       image: NetworkImage(widget.user.photoUrl!),
                     ),
                   ),

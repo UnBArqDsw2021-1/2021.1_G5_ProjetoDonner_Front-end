@@ -1,4 +1,5 @@
 import 'package:donner/models/client_model.dart';
+import 'package:donner/screens/edit_profile_screen.dart';
 import 'package:donner/screens/home_screen.dart';
 import 'package:donner/screens/login_screen.dart';
 import 'package:donner/screens/profile_screen.dart';
@@ -16,20 +17,19 @@ class AppWidget extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      // home: HomeScreen(),
       initialRoute: "/home",
       routes: {
         "/splash": (context) => const SplashScreen(),
         "/home": (context) => HomeScreen(
-              user: ModalRoute.of(context)!.settings.arguments as ClientModel?,
-            ),
+            user: ModalRoute.of(context)!.settings.arguments as ClientModel?),
         "/login": (context) => const LoginScreen(),
-        "/profile": (context) => ProfileScreen(
-              user: ModalRoute.of(context)!.settings.arguments as ClientModel,
-            ),
         "/register": (context) => RegisterScreen(
-              user: ModalRoute.of(context)!.settings.arguments as User,
-            ),
+            user: ModalRoute.of(context)!.settings.arguments as User),
+        "/profile": (context) => ProfileScreen(
+            user: ModalRoute.of(context)!.settings.arguments as ClientModel),
+        "/edit": (context) => EditProfileScreen(
+            user: ModalRoute.of(context)!.settings.arguments as ClientModel),
       },
     );
   }
