@@ -161,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                           } else {
-                            controller.saveUser(context);
+                            controller.registerUser(context, true);
                           }
                         },
                         text: "Confirmar",

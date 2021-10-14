@@ -49,7 +49,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          "/edit",
+                          arguments: widget.user,
+                        );
+                      },
                       icon: const Icon(
                         FontAwesomeIcons.edit,
                         color: AppColors.primary,
@@ -72,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       image: NetworkImage(widget.user.photoUrl!),
                     ),
                   ),

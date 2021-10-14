@@ -51,6 +51,11 @@ dependencies:
   dropdown_search: ^1.0.0
   image_picker: ^0.8.4+2
 
+  #gallery
+  image_picker: ^0.8.4+2
+
+  #mask
+  mask_text_input_formatter: ^2.0.0
 
 dev_dependencies:
   flutter_test:
