@@ -7,6 +7,7 @@ import 'package:donner/screens/login_screen.dart';
 import 'package:donner/screens/profile_screen.dart';
 import 'package:donner/screens/register_screen.dart';
 import 'package:donner/screens/splash_screen.dart';
+import 'package:donner/screens/user_posts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,7 @@ class AppWidget extends StatelessWidget {
               user: ModalRoute.of(context)!.settings.arguments as User,
             ),
         "/create_post": (context) => CreatePostScreen(category: ModalRoute.of(context)!.settings.arguments as CategoryModel?,),
+        "/user_posts": (context) => UserPosts(),
         "/category": (context) => const CategoryScreen(),
       },
     );

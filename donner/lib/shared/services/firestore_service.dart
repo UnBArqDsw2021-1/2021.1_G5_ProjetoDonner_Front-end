@@ -39,9 +39,18 @@ class FirestoreService {
   }
 
   Future<QuerySnapshot> getAnnouncements() async {
-    final CollectionReference announcementsRef =
-        FirebaseFirestore.instance.collection('posts');
+    return _postCollectionRef.get();
+  }
 
-    return announcementsRef.get();
+  Future<List<AnnouncementModel>> getUserAnnouncements(String userId) async {
+    QuerySnapshot querySnapshot = await _postCollectionRef
+        .where("owner", isEqualTo: userId)
+        .get()
+        .catchError((e) => print(e));
+    List<DocumentSnapshot> docSnaps = querySnapshot.docs;
+    return docSnaps.map<AnnouncementModel>((DocumentSnapshot documentSnapshot) {
+      return AnnouncementModel.fromMap(
+          documentSnapshot.data()! as Map<String, dynamic>);
+    }).toList();
   }
 }
