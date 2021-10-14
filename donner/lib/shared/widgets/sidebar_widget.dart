@@ -87,27 +87,29 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   onTap: () {
                     Navigator.pushReplacementNamed(context, "/create_post");
                   },
-                  leading: const Icon(
+                  leading: Icon(
                     FontAwesomeIcons.plusSquare,
-                    color: AppColors.secondary,
+                    color: widget.user == null ? Colors.grey : AppColors.secondary,
                     size: 30,
                   ),
                   title: Text(
                     "Criar anúncio",
-                    style: AppTextStyles.cardText,
+                    style: widget.user == null ? const TextStyle(color: Colors.grey) : AppTextStyles.cardText,
                   ),
+                  enabled: widget.user == null ? false : true,
                 ),
                 ListTile(
                   onTap: () {},
-                  leading: const ImageIcon(
-                    AssetImage('assets/mini_logo_donner.png'),
-                    color: AppColors.primary,
+                  leading: ImageIcon(
+                    const AssetImage('assets/mini_logo_donner.png'),
+                    color: widget.user == null ? Colors.grey : AppColors.primary,
                     size: 30,
                   ),
                   title: Text(
                     "Doações e pedidos",
-                    style: AppTextStyles.cardText,
+                    style: widget.user == null ? const TextStyle(color: Colors.grey) : AppTextStyles.cardText,
                   ),
+                  enabled: widget.user == null ? false : true,
                 ),
                 ListTile(
                   onTap: () async {

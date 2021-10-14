@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:donner/controllers/authentication.dart';
 import 'package:donner/controllers/create_post_controller.dart';
 import 'package:donner/models/category_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
@@ -16,7 +17,7 @@ class CreatePostScreen extends StatefulWidget {
   User? user;
   CategoryModel? category;
   CreatePostScreen({Key? key, this.category}) : super(key: key) {
-    user = FirebaseAuth.instance.currentUser;
+    user = Authentication().getUser();
   }
 
   @override
