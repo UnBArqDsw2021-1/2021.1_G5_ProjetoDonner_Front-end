@@ -7,6 +7,7 @@ import 'package:donner/shared/widgets/button_widget/factory_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   Authentication controller = Authentication();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -39,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: AppColors.backgroundColor,
                   ),
                   width: size.width,
-                  height: size.height * 0.45,
+                  height: size.height * 0.40,
                 ),
                 Center(
                   child: Image.asset(
@@ -72,8 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         textStyle: AppTextStyles.bodyText,
                         isFill: true,
                         onPressed: () async {
-                           await controller.signInWithGoogle(
-                              context: context);
+                          await controller.signInWithGoogle(context: context);
                         },
                       ))
                 ],

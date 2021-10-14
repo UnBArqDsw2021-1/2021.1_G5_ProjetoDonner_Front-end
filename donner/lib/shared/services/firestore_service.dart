@@ -7,6 +7,8 @@ class FirestoreService {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference _postCollectionRef =
       FirebaseFirestore.instance.collection('posts');
+  final CollectionReference _categoryCollectionRef =
+      FirebaseFirestore.instance.collection('categories');
 
   Future addUser(ClientModel client, String uid) async {
     Map<String, dynamic> data = client.toMap();
@@ -23,10 +25,7 @@ class FirestoreService {
   }
 
   Future<QuerySnapshot> getCategories() async {
-    final CollectionReference categoriesRef =
-        FirebaseFirestore.instance.collection('categories');
-
-    return categoriesRef.get();
+    return _categoryCollectionRef.get();
   }
 
   Future addPost(AnnouncementModel announcement) async {
@@ -52,5 +51,19 @@ class FirestoreService {
       return AnnouncementModel.fromMap(
           documentSnapshot.data()! as Map<String, dynamic>);
     }).toList();
+  }
+
+  Future<QuerySnapshot> getAnnouncementsByUserId(String userId) async {
+    return _postCollectionRef.where('owner', isEqualTo: userId).get();
+  }
+
+  Future<String> getCategoryById(String categoryId) async {
+    final doc = await _categoryCollectionRef.doc(categoryId).get();
+    String category = doc.get('category');
+    return category;
+  }
+
+  Future<void> deleteAnnouncement(String announcementId) async {
+    _postCollectionRef.doc(announcementId).delete();
   }
 }
