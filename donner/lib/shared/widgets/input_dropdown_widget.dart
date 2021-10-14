@@ -8,7 +8,8 @@ class InputDropdownWidget extends StatefulWidget {
   final void Function(String? value) onChanged;
   final List<String> items;
   final String hint;
-  final String? currentItem;
+  final String? Function(String?)? validator;
+
 
   InputDropdownWidget({
     Key? key,
@@ -17,6 +18,7 @@ class InputDropdownWidget extends StatefulWidget {
     required this.items,
     this.state,
     required this.enable,
+    this.validator,
     this.currentItem,
   }) : super(key: key);
 
@@ -29,15 +31,17 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       child: DropdownSearch<String>(
+        validator: widget.validator,
         onChanged: widget.onChanged,
         enabled: widget.enable,
+        showAsSuffixIcons: true,
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
           contentPadding: const EdgeInsets.fromLTRB(12, 12, 0, 0),
           border: const OutlineInputBorder(),
         ),
         mode: Mode.DIALOG,
-        showSearchBox: true,
+        showSearchBox: (widget.items.length > 5),
         popupShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         popupTitle: Container(

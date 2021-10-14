@@ -45,11 +45,11 @@ dependencies:
   cloud_firestore: ^2.5.3
   google_sign_in: ^5.1.1
   firebase_storage: ^10.0.5
-  
+
   #apis
-  #cidades_estados_ibge: ^0.0.7
   estados_municipios: ^2.0.0
   dropdown_search: ^1.0.0
+  image_picker: ^0.8.4+2
 
   #gallery
   image_picker: ^0.8.4+2

@@ -8,6 +8,10 @@ import 'package:flutter/material.dart';
 class Authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  User? getUser() {
+    return _auth.currentUser;
+  }
+
   Future<void> signInWithGoogle({required BuildContext context}) async {
     User? user;
 

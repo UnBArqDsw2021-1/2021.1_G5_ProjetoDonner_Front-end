@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donner/models/announcement_model.dart';
 import 'package:donner/models/client_model.dart';
 
 class FirestoreService {
   final CollectionReference _userCollectionRef =
       FirebaseFirestore.instance.collection('users');
+  final CollectionReference _postCollectionRef =
+      FirebaseFirestore.instance.collection('posts');
+  final CollectionReference _categoryCollectionRef =
+      FirebaseFirestore.instance.collection('categories');
 
   Future addUser(ClientModel client, String uid) async {
     Map<String, dynamic> data = client.toMap();
@@ -19,6 +24,36 @@ class FirestoreService {
     return user;
   }
 
+  Future<QuerySnapshot> getCategories() async {
+    return _categoryCollectionRef.get();
+  }
+
+  Future addPost(AnnouncementModel announcement) async {
+    Map<String, dynamic> data = announcement.toMap();
+
+    await _postCollectionRef
+        .doc(announcement.id)
+        .set(data)
+        .catchError((e) => print(e));
+  }
+
+  Future<QuerySnapshot> getAnnouncements() async {
+    return _postCollectionRef.get();
+  }
+
+  Future<QuerySnapshot> getAnnouncementsByUserId(String userId) async {
+    return _postCollectionRef.where('owner', isEqualTo: userId).get();
+  }
+
+  Future<String> getCategoryById(String categoryId) async {
+    final doc = await _categoryCollectionRef.doc(categoryId).get();
+    String category = doc.get('category');
+    return category;
+  }
+
+  Future<void> deleteAnnouncement(String announcementId) async {
+    _postCollectionRef.doc(announcementId).delete();
+  }
   Future updateUser({required ClientModel user}) async {
     Map<String, dynamic> data = user.toMap();
     await _userCollectionRef

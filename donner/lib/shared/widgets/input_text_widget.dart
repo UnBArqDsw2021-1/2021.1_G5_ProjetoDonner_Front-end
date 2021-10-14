@@ -10,6 +10,14 @@ class InputTextWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? formatter;
   final void Function(String value) onChanged;
+  const InputTextWidget(
+      {Key? key,
+      this.label,
+      this.icon,
+      this.validator,
+      this.controller,
+      required this.onChanged})
+      : super(key: key);
   const InputTextWidget({
     Key? key,
     this.label,
@@ -30,15 +38,19 @@ class InputTextWidget extends StatelessWidget {
       validator: validator,
       initialValue: initialValue,
       decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 10),
-          prefixIcon: Container(
-            margin: const EdgeInsets.only(right: 5),
-            decoration: const BoxDecoration(
-                border: Border(
-              right: BorderSide(color: AppColors.stroke),
-            )),
-            child: icon,
-          ),
+          contentPadding: icon != null
+              ? const EdgeInsets.symmetric(vertical: 10)
+              : EdgeInsets.symmetric(horizontal: 10),
+          prefixIcon: icon != null
+              ? Container(
+                  margin: const EdgeInsets.only(right: 5),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                    right: BorderSide(color: AppColors.stroke),
+                  )),
+                  child: icon,
+                )
+              : null,
           enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.stroke)),
           focusedBorder: const OutlineInputBorder(

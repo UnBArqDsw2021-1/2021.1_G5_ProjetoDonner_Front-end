@@ -31,7 +31,6 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                     padding: EdgeInsets.zero,
                     child: ListTile(
                       onTap: () {
-                        
                         if (widget.user != null) {
                           Navigator.pushNamed(context, '/profile',
                               arguments: widget.user);
@@ -85,30 +84,32 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   color: AppColors.stroke,
                 ),
                 ListTile(
-                  onTap: () {},
-                  leading: const Icon(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, "/create_post");
+                  },
+                  leading: Icon(
                     FontAwesomeIcons.plusSquare,
-                    color: AppColors.secondary,
+                    color: widget.user == null ? Colors.grey : AppColors.secondary,
                     size: 30,
                   ),
                   title: Text(
                     "Criar anúncio",
-                    style: AppTextStyles.cardText,
+                    style: widget.user == null ? const TextStyle(color: Colors.grey) : AppTextStyles.cardText,
                   ),
+                  enabled: widget.user == null ? false : true,
                 ),
                 ListTile(
-                  onTap: () {
-                   
-                  },
-                  leading: const ImageIcon(
-                    AssetImage('assets/mini_logo_donner.png'),
-                    color: AppColors.primary,
+                  onTap: () {},
+                  leading: ImageIcon(
+                    const AssetImage('assets/mini_logo_donner.png'),
+                    color: widget.user == null ? Colors.grey : AppColors.primary,
                     size: 30,
                   ),
                   title: Text(
                     "Doações e pedidos",
-                    style: AppTextStyles.cardText,
+                    style: widget.user == null ? const TextStyle(color: Colors.grey) : AppTextStyles.cardText,
                   ),
+                  enabled: widget.user == null ? false : true,
                 ),
                 ListTile(
                   onTap: () async {
