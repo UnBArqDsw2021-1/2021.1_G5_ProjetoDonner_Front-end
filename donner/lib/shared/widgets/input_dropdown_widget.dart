@@ -10,6 +10,7 @@ class InputDropdownWidget extends StatefulWidget {
   final String hint;
   final String? Function(String?)? validator;
 
+
   InputDropdownWidget({
     Key? key,
     required this.onChanged,
@@ -18,6 +19,7 @@ class InputDropdownWidget extends StatefulWidget {
     this.state,
     required this.enable,
     this.validator,
+    this.currentItem,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,6 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // height: 40,
       child: DropdownSearch<String>(
         validator: widget.validator,
         onChanged: widget.onChanged,
@@ -54,6 +55,7 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
               style: const TextStyle(color: AppColors.backgroundColor)),
         ),
         items: widget.items,
+        selectedItem: widget.currentItem,
       ),
     );
   }

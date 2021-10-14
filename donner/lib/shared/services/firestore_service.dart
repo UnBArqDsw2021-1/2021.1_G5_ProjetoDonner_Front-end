@@ -54,4 +54,11 @@ class FirestoreService {
   Future<void> deleteAnnouncement(String announcementId) async {
     _postCollectionRef.doc(announcementId).delete();
   }
+  Future updateUser({required ClientModel user}) async {
+    Map<String, dynamic> data = user.toMap();
+    await _userCollectionRef
+        .doc(user.id)
+        .update(data)
+        .catchError((e) => print(e));
+  }
 }
