@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:donner/controllers/create_post_controller.dart';
 import 'package:donner/models/category_model.dart';
+import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/button_widget/factory_button.dart';
 import 'package:donner/shared/widgets/input_dropdown_widget.dart';
 import 'package:donner/shared/widgets/input_text_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:donner/shared/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -80,7 +80,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       icon: const Icon(
         Icons.camera_alt,
         color: AppColors.primary,
-        size: 50,
+        size: 40,
       ),
       isFill: true,
     );
@@ -107,8 +107,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         elevation: 0,
         leading: GestureDetector(
             onTap: () {
-              if(!loading)
-                Navigator.of(context).pop();
+              if (!loading) Navigator.of(context).pop();
             },
             child: const Icon(
               FontAwesomeIcons.chevronLeft,
@@ -123,8 +122,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 child: const Center(
                   child: CircularProgressIndicator(),
                 ),
-              ) :
-            SingleChildScrollView(
+              )
+            : SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Form(

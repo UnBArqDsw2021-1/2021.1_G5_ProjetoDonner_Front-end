@@ -4,11 +4,9 @@ import 'package:donner/models/announcement_model.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
-import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/announcement_tile_widget.dart';
 import 'package:donner/shared/widgets/sidebar_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   ClientModel? user;
@@ -24,19 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
-      //   bottom: TabBar(
-      //     controller: ,
-      //     tabs: [
-      //       Tab(child: Text("Categoria", style: AppTextStyles.tabBarText)),
-      //       Tab(child: Text("Filtro", style: AppTextStyles.tabBarText))
-      //     ],
-      //   ),
-        // leading: Icon(Icons.menu, color: AppColors.backgroundColor),
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {},
-        //       icon: Icon(Icons.search, color: AppColors.backgroundColor))
-        // ],
       ),
       body: FutureBuilder<QuerySnapshot>(
           future: FirestoreService().getAnnouncements(),
@@ -47,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             } else {
               return GridView.builder(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisSpacing: 4,
                     mainAxisSpacing: 4,
@@ -77,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20),
         child: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, "/create_post");
@@ -99,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            child: Icon(
+            child: const Icon(
               Icons.add_rounded,
               size: 40,
               color: AppColors.secondary,
@@ -116,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             GestureDetector(
               onTap: () {},
-              child: Icon(
+              child: const Icon(
                 Icons.person_outline,
                 color: AppColors.backgroundColor,
                 size: 35,
@@ -124,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () {},
-              child: Icon(
+              child: const Icon(
                 Icons.home_outlined,
                 size: 35,
                 color: AppColors.backgroundColor,
