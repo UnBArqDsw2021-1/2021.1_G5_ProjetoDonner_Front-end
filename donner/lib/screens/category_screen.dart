@@ -36,9 +36,10 @@ class CategoryScreen extends StatelessWidget {
                     return InkWell(
                       onTap: () {
                         Navigator.pop(
-                            context,
-                            CategoryModel.fromDocument(
-                                snapshot.data!.docs[index]));
+                          context,
+                          CategoryModel.fromDocument(
+                              snapshot.data!.docs[index]),
+                        );
                       },
                       child: Column(
                         children: [

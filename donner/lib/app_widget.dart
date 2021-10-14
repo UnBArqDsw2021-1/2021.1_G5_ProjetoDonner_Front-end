@@ -1,9 +1,13 @@
+import 'package:donner/models/announcement_model.dart';
 import 'package:donner/models/category_model.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/screens/category_screen.dart';
 import 'package:donner/screens/create_post_screen.dart';
+import 'package:donner/screens/edit_post_screen.dart';
 import 'package:donner/screens/home_screen.dart';
 import 'package:donner/screens/login_screen.dart';
+import 'package:donner/screens/my_posts_screen.dart';
+import 'package:donner/screens/post_screen.dart';
 import 'package:donner/screens/profile_screen.dart';
 import 'package:donner/screens/register_screen.dart';
 import 'package:donner/screens/splash_screen.dart';
@@ -33,7 +37,19 @@ class AppWidget extends StatelessWidget {
         "/register": (context) => RegisterScreen(
               user: ModalRoute.of(context)!.settings.arguments as User,
             ),
-        "/create_post": (context) => CreatePostScreen(category: ModalRoute.of(context)!.settings.arguments as CategoryModel?,),
+        "/post": (context) => PostScreen(
+              announcement: ModalRoute.of(context)!.settings.arguments
+                  as AnnouncementModel,
+            ),
+        "/my_posts": (context) => const MyPostsScreen(),
+        "/create_post": (context) => CreatePostScreen(
+              category:
+                  ModalRoute.of(context)!.settings.arguments as CategoryModel?,
+            ),
+        "/edit_post": (context) => EditPostScreen(
+              announcement: ModalRoute.of(context)!.settings.arguments
+                  as AnnouncementModel,
+            ),
         "/category": (context) => const CategoryScreen(),
       },
     );
