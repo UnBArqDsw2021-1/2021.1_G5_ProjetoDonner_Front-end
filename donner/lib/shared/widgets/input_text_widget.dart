@@ -10,14 +10,7 @@ class InputTextWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? formatter;
   final void Function(String value) onChanged;
-  const InputTextWidget(
-      {Key? key,
-      this.label,
-      this.icon,
-      this.validator,
-      this.controller,
-      required this.onChanged})
-      : super(key: key);
+
   const InputTextWidget({
     Key? key,
     this.label,

@@ -19,7 +19,6 @@ class InputDropdownWidget extends StatefulWidget {
     this.state,
     required this.enable,
     this.validator,
-    this.currentItem,
   }) : super(key: key);
 
   @override
@@ -55,7 +54,6 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
               style: const TextStyle(color: AppColors.backgroundColor)),
         ),
         items: widget.items,
-        selectedItem: widget.currentItem,
       ),
     );
   }

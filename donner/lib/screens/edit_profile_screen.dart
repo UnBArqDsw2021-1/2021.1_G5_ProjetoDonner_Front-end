@@ -149,10 +149,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Icons.phone,
                           color: AppColors.primary,
                         ),
-                        initialValue: widget.user.phone!,
-                        keyboardType: TextInputType.phone,
                         validator: controller.validatePhone,
-                        formatter: [maskFormatter],
                         onChanged: (value) {
                           controller.onChange(phone: value);
                         },
@@ -180,7 +177,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   hint: "UF",
                                   items: states,
                                   enable: true,
-                                  currentItem: widget.user.state!,
                                 )),
                           ),
                           const Padding(padding: EdgeInsets.only(left: 10)),
@@ -196,7 +192,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             items: cities,
                             state: state,
                             enable: state != null ? true : false,
-                            currentItem: city,
                           )),
                         ],
                       ),
