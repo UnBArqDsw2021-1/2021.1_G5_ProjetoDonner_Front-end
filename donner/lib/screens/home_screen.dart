@@ -4,9 +4,11 @@ import 'package:donner/models/announcement_model.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
+import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/announcement_tile_widget.dart';
 import 'package:donner/shared/widgets/sidebar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   ClientModel? user;
@@ -65,7 +67,21 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.only(top: 20),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, "/create_post");
+            if (widget.user != null) {
+              Navigator.pushNamed(context, "/create_post");
+            } else {
+              // Navigator.pushNamed(context, "/login");
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                  'Ação necessita de login',
+                ),
+                elevation: 0,
+                behavior: SnackBarBehavior.floating,
+                width: 200,
+                backgroundColor: AppColors.primary,
+                duration: Duration(seconds: 1),
+              ));
+            }
           },
           backgroundColor: Colors.transparent,
           elevation: 0,
