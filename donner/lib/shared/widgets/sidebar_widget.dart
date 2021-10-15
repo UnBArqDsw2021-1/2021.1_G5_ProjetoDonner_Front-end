@@ -53,9 +53,9 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(widget.user!.photoUrl!)
-                                ),
+                                    fit: BoxFit.cover,
+                                    image:
+                                        NetworkImage(widget.user!.photoUrl!)),
                               ),
                             ),
                       title: widget.user != null
@@ -89,27 +89,33 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   },
                   leading: Icon(
                     FontAwesomeIcons.plusSquare,
-                    color: widget.user == null ? Colors.grey : AppColors.secondary,
+                    color:
+                        widget.user == null ? Colors.grey : AppColors.secondary,
                     size: 30,
                   ),
                   title: Text(
                     "Criar anúncio",
-                    style: widget.user == null ? const TextStyle(color: Colors.grey) : AppTextStyles.cardText,
+                    style: widget.user == null
+                        ? const TextStyle(color: Colors.grey)
+                        : AppTextStyles.cardText,
                   ),
                   enabled: widget.user == null ? false : true,
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, "/my_posts");
+                    Navigator.pushNamed(context, "/user_posts");
                   },
                   leading: ImageIcon(
                     const AssetImage('assets/mini_logo_donner.png'),
-                    color: widget.user == null ? Colors.grey : AppColors.primary,
+                    color:
+                        widget.user == null ? Colors.grey : AppColors.primary,
                     size: 30,
                   ),
                   title: Text(
                     "Doações e pedidos",
-                    style: widget.user == null ? const TextStyle(color: Colors.grey) : AppTextStyles.cardText,
+                    style: widget.user == null
+                        ? const TextStyle(color: Colors.grey)
+                        : AppTextStyles.cardText,
                   ),
                   enabled: widget.user == null ? false : true,
                 ),

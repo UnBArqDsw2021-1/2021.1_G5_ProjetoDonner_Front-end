@@ -39,7 +39,7 @@ class AppWidget extends StatelessWidget {
               announcement: ModalRoute.of(context)!.settings.arguments
                   as AnnouncementModel,
             ),
-        "/my_posts": (context) => UserPosts(),
+        "/user_posts": (context) => UserPosts(),
         "/create_post": (context) => CreatePostScreen(
               category:
                   ModalRoute.of(context)!.settings.arguments as CategoryModel?,

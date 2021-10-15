@@ -129,11 +129,13 @@ class PostScreen extends StatelessWidget {
                         const Divider(thickness: 0.5, color: AppColors.stroke),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              '/profile',
-                              arguments: owner,
-                            );
+                            if (Authentication().getUser() != null) {
+                              Navigator.pushNamed(
+                                context,
+                                '/profile',
+                                arguments: owner,
+                              );
+                            }
                           },
                           child: Container(
                             alignment: Alignment.topLeft,

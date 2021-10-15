@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: AppColors.secondary,
                 size: 30,
               )),
-          actions: (widget.user.id == FirebaseAuth.instance.currentUser!.uid)
+          actions: (Authentication().getUser() != null && widget.user.id == Authentication().getUser()!.uid)
               ? [
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
