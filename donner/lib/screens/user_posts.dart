@@ -51,6 +51,8 @@ class _UserPostsState extends State<UserPosts> {
                             Image.network(
                               announcement.images!,
                               height: 200,
+                              width: 100,
+                              fit: BoxFit.fitWidth,
                             ),
                             Container(
                               padding: const EdgeInsets.all(8),
@@ -59,12 +61,15 @@ class _UserPostsState extends State<UserPosts> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    announcement.title!,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w500),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
+                                  SizedBox(
+                                    width: 200,
+                                    child: Text(
+                                      announcement.title!,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
                                   ),
                                 ],
                               ),
