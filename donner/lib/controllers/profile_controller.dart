@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ProfileController {
   final formKey = GlobalKey<FormState>();
@@ -41,6 +42,8 @@ class ProfileController {
     return null;
   }
 
+  MaskTextInputFormatter maskFormatter = MaskTextInputFormatter(
+      mask: '## #####-####', filter: {"#": RegExp(r'[0-9]')});
   void onChange({
     String? photoUrl,
     String? phone,

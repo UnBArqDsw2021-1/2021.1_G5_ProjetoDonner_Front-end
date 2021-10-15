@@ -11,7 +11,6 @@ import 'package:estados_municipios/estados_municipios.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final ClientModel user;
@@ -29,8 +28,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String? state;
   String? city;
   XFile? _image;
-  var maskFormatter = MaskTextInputFormatter(
-      mask: '## #####-####', filter: {"#": RegExp(r'[0-9]')});
 
   @override
   void initState() {
@@ -152,7 +149,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         initialValue: widget.user.phone!,
                         keyboardType: TextInputType.phone,
                         validator: controller.validatePhone,
-                        formatter: [maskFormatter],
+                        formatter: [controller.maskFormatter],
                         onChanged: (value) {
                           controller.onChange(phone: value);
                         },
@@ -253,11 +250,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               _image!.path, widget.user.id);
                         }
                         controller.registerUser(context, false);
-                        // Navigator.pushNamedAndRemoveUntil(
-                        //     context, "/home", ModalRoute.withName('/home'),
-                        //     arguments: updatedClient);
-                        // Upload da nova imagem no Firebase Storage
-
                       }
                     },
                     text: "Atualizar",

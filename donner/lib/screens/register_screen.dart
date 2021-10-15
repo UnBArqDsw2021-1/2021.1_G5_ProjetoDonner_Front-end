@@ -23,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   List<String> cities = [];
   String? state;
   String? city;
+
   @override
   void initState() {
     super.initState();
@@ -64,115 +65,123 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               Container(
                 padding: const EdgeInsets.only(top: 45, bottom: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Telefone:",
-                      textAlign: TextAlign.start,
-                      style: AppTextStyles.bodyText,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: InputTextWidget(
-                        icon: const Icon(
-                          Icons.phone,
+                child: Form(
+                  key: controller.formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Telefone:",
+                        textAlign: TextAlign.start,
+                        style: AppTextStyles.bodyText,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: InputTextWidget(
+                          keyboardType: TextInputType.phone,
+                          validator: controller.validatePhone,
+                          formatter: [controller.maskFormatter],
+                          icon: const Icon(
+                            Icons.phone,
+                            color: AppColors.primary,
+                          ),
+                          label: "Digite seu número",
+                          onChanged: (value) {
+                            controller.onChange(phone: value);
+                          },
+                        ),
+                      ),
+                      Text(
+                        "Local:",
+                        textAlign: TextAlign.start,
+                        style: AppTextStyles.bodyText,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                                width: size.width * 0.25,
+                                child: InputDropdownWidget(
+                                  onChanged: (value) {
+                                    setState(() {
+                                      state = value;
+                                      controller.onChange(state: value);
+                                      city = null;
+                                      listCities(state!);
+                                    });
+                                  },
+                                  hint: "UF",
+                                  items: states,
+                                  enable: true,
+                                )),
+                            const Padding(padding: EdgeInsets.only(left: 10)),
+                            Expanded(
+                                child: InputDropdownWidget(
+                              onChanged: (value) {
+                                setState(() {
+                                  controller.onChange(city: value);
+                                  city = value;
+                                });
+                              },
+                              hint: "Cidade",
+                              items: cities,
+                              state: state,
+                              enable: state != null ? true : false,
+                              currentItem: city,
+                            )),
+                          ],
+                        ),
+                      ),
+                      Text("Adicione uma descrição (opcional):",
+                          style: AppTextStyles.bodyText),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              controller.onChange(description: value);
+                            });
+                          },
+                          maxLength: 500,
+                          maxLines: 12,
+                          decoration: InputDecoration(
+                            hintText:
+                                "Digite um descrição sobre você ou sua empresa de até 500 caracteres",
+                            hintStyle: AppTextStyles.inputText,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                borderSide:
+                                    BorderSide(color: AppColors.stroke)),
+                            isDense: true,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: CustomTextButton(
+                          onPressed: () {
+                            if (!cities.contains(city)) {
+                              final snackBar = SnackBar(
+                                content: Text(
+                                    "O estado: $state não contém a cidade: $city"),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } else {
+                              controller.registerUser(context, true);
+                            }
+                          },
+                          text: "Confirmar",
+                          textStyle: AppTextStyles.btnFillText,
                           color: AppColors.primary,
+                          isFill: true,
+                          width: 200.0,
+                          height: 50.0,
                         ),
-                        label: "Digite seu número",
-                        onChanged: (value) {
-                          controller.onChange(phone: value);
-                        },
-                      ),
-                    ),
-                    Text(
-                      "Local:",
-                      textAlign: TextAlign.start,
-                      style: AppTextStyles.bodyText,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                              width: size.width * 0.25,
-                              height: 40,
-                              child: InputDropdownWidget(
-                                onChanged: (value) {
-                                  setState(() {
-                                    state = value;
-                                    controller.onChange(state: value);
-                                    listCities(state!);
-                                  });
-                                },
-                                hint: "UF",
-                                items: states,
-                                enable: true,
-                              )),
-                          const Padding(padding: EdgeInsets.only(left: 10)),
-                          Expanded(
-                              child: InputDropdownWidget(
-                            onChanged: (value) {
-                              setState(() {
-                                controller.onChange(city: value);
-                                city = value;
-                              });
-                            },
-                            hint: "Cidade",
-                            items: cities,
-                            state: state,
-                            enable: state != null ? true : false,
-                          )),
-                        ],
-                      ),
-                    ),
-                    Text("Adicione uma descrição (opcional):",
-                        style: AppTextStyles.bodyText),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            controller.onChange(description: value);
-                          });
-                        },
-                        maxLength: 500,
-                        maxLines: 12,
-                        decoration: InputDecoration(
-                          hintText:
-                              "Digite um descrição sobre você ou sua empresa de até 500 caracteres",
-                          hintStyle: AppTextStyles.inputText,
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              borderSide: BorderSide(color: AppColors.stroke)),
-                          isDense: true,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: CustomTextButton(
-                        onPressed: () {
-                          if (!cities.contains(city)) {
-                            final snackBar = SnackBar(
-                              content: Text(
-                                  "O estado: $state não contém a cidade: $city"),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          } else {
-                            controller.registerUser(context, true);
-                          }
-                        },
-                        text: "Confirmar",
-                        textStyle: AppTextStyles.btnFillText,
-                        color: AppColors.primary,
-                        isFill: true,
-                        width: 200.0,
-                        height: 50.0,
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

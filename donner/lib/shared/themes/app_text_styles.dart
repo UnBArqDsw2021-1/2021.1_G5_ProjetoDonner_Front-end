@@ -73,6 +73,18 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
 
+  static final modalBottomText = GoogleFonts.inter(
+    fontSize: 20.0,
+    color: AppColors.bodyTextColor,
+    fontWeight: FontWeight.w400,
+  );
+
+  static final modalBottomTextBold = GoogleFonts.inter(
+    fontSize: 20.0,
+    color: AppColors.bodyTextColor,
+    fontWeight: FontWeight.w700,
+  );
+
   static final appBarText = GoogleFonts.workSans(
     fontSize: 20.0,
     color: AppColors.backgroundColor,
