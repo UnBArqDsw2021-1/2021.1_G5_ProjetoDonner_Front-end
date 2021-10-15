@@ -39,61 +39,66 @@ class _HomeScreenState extends State<HomeScreen> {
               final result =
                   await Navigator.pushNamed(context, '/filter') as Map?;
               if (result != null) {
-                setState(() {
-                  filters = result;
-                });
+                filters = result;
+                widget.category = filters['category'];
+                setState(() {});
               }
             },
             category: widget.category,
             onTapCategory: () async {
               final result = await Navigator.pushNamed(context, '/category')
                   as CategoryModel?;
+              widget.category = result;
+              filters['category'] = widget.category!.id;
               setState(
-                () {
-                  widget.category = result;
-                  print(widget.category);
-                },
+                () {},
               );
             },
           ),
           Expanded(
             child: FutureBuilder<QuerySnapshot>(
-                future: FirestoreService().getAnnouncements(filters),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    return GridView.builder(
-                        padding: EdgeInsets.all(10),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 4,
-                          mainAxisSpacing: 4,
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.65,
-                        ),
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final announcement = AnnouncementModel.fromDocument(
-                              snapshot.data!.docs[index]);
-                          return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/post',
-                                arguments: announcement,
-                              );
-                            },
-                            child: AnnouncementTileWidget(
-                              type: "grid",
-                              announcement: announcement,
-                            ),
+              future: FirestoreService().getAnnouncements(
+                  category:
+                      widget.category != null ? widget.category!.id : null,
+                  isDonation: filters['isDonation'],
+                  date: true),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return GridView.builder(
+                    padding: EdgeInsets.all(10),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 4,
+                      mainAxisSpacing: 4,
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final announcement = AnnouncementModel.fromDocument(
+                          snapshot.data!.docs[index]);
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/post',
+                            arguments: announcement,
                           );
-                        });
-                  }
-                }),
+                        },
+                        child: AnnouncementTileWidget(
+                          type: "grid",
+                          announcement: announcement,
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),
@@ -136,7 +141,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomBarWidget(
-        onTapHome: () {},
+        onTapHome: () {
+          Navigator.pushReplacementNamed(
+            context,
+            '/home',
+          );
+        },
         onTapPerson: () async {
           if (Authentication().getUser() != null) {
             ClientModel? client = await Authentication().getUserInfo();

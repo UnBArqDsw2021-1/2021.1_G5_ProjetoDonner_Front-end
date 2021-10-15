@@ -1,4 +1,3 @@
-import 'package:donner/shared/widgets/button_widget/custom_text_button.dart';
 import 'package:donner/shared/widgets/button_widget/factory_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:donner/models/category_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
-import 'package:donner/shared/widgets/button_widget/custom_icon_button.dart';
 
 class FilterScreen extends StatefulWidget {
   CategoryModel? category;
@@ -18,7 +16,7 @@ class FilterScreen extends StatefulWidget {
 
 class _FilterScreenState extends State<FilterScreen> {
   final btn = FactoryButton();
-  List filters = [];
+  Map filters = {};
   bool isDonationSelected = false;
   bool isOrderSelected = false;
   bool isDataSelected = false;
@@ -44,7 +42,7 @@ class _FilterScreenState extends State<FilterScreen> {
             )),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -150,18 +148,15 @@ class _FilterScreenState extends State<FilterScreen> {
             Center(
               child: btn.getButton(
                 onPressed: () {
-                  if (isDonationSelected) filters.add("Donation");
-                  if (isOrderSelected) filters.add("Order");
-                  if (isDataSelected) filters.add("Date");
-                  if (widget.category != null) filters.add(widget.category!.id);
-
-                  var _filters ={
-                    'categoty': widget.category,
-                    'isDonation': isDonationSelected,
-                    'date': isDataSelected,
+                  var filters = {
+                    'category': widget.category,
+                    'isDonation': !isDonationSelected && !isOrderSelected
+                        ? null
+                        : isDonationSelected,
+                    'date': !isDataSelected ? null : isDataSelected,
                   };
 
-                  Navigator.pop(context, _filters);
+                  Navigator.pop(context, filters);
                 },
                 text: "Filtrar",
                 textStyle: AppTextStyles.btnFillText,

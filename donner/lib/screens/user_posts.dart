@@ -141,7 +141,7 @@ class _UserPostsState extends State<UserPosts> {
       bottomNavigationBar: BottomBarWidget(
         onTapPerson: () async {
           ClientModel? client = await Authentication().getUserInfo();
-          Navigator.popAndPushNamed(
+          Navigator.pushReplacementNamed(
             context,
             '/profile',
             arguments: client!,

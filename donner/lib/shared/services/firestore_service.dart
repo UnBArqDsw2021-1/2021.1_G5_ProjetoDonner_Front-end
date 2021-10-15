@@ -37,9 +37,42 @@ class FirestoreService {
         .catchError((e) => print(e));
   }
 
-  Future<QuerySnapshot> getAnnouncements(Map filters) async {
-    
-    return _postCollectionRef.get();
+  Future<QuerySnapshot> getAnnouncements(
+      {String? category, bool? isDonation, bool? date}) async {
+    if (category != null && isDonation != null && date != null) {
+      return _postCollectionRef
+          .where('categoryId', isEqualTo: category)
+          .where('isDonation', isEqualTo: isDonation)
+          .orderBy('id', descending: true)
+          .get();
+    }
+    if (category != null && isDonation != null) {
+      return _postCollectionRef
+          .where('categoryId', isEqualTo: category)
+          .where('isDonation', isEqualTo: isDonation)
+          .get();
+    }
+    if (category != null && date != null) {
+      return _postCollectionRef
+          .where('categoryId', isEqualTo: category)
+          .orderBy('id', descending: true)
+          .get();
+    }
+    if (isDonation != null && date != null) {
+      return _postCollectionRef
+          .where('isDonation', isEqualTo: isDonation)
+          .orderBy('id', descending: true)
+          .get();
+    }
+    if (category != null) {
+      return _postCollectionRef.where('categoryId', isEqualTo: category).get();
+    }
+    if (isDonation != null) {
+      return _postCollectionRef
+          .where('isDonation', isEqualTo: isDonation)
+          .get();
+    }
+    return _postCollectionRef.orderBy('id', descending: true).get();
   }
 
   Future<List<AnnouncementModel>> getUserAnnouncements(String userId) async {
