@@ -45,6 +45,18 @@ class FirestoreService {
     return _postCollectionRef.where('owner', isEqualTo: userId).get();
   }
 
+  Future<List<AnnouncementModel>> getUserAnnouncements(String userId) async {
+    QuerySnapshot querySnapshot = await _postCollectionRef
+        .where("owner", isEqualTo: userId)
+        .get()
+        .catchError((e) => print(e));
+    List<DocumentSnapshot> docSnaps = querySnapshot.docs;
+    return docSnaps.map<AnnouncementModel>((DocumentSnapshot documentSnapshot) {
+      return AnnouncementModel.fromMap(
+          documentSnapshot.data()! as Map<String, dynamic>);
+    }).toList();
+  }
+
   Future<String> getCategoryById(String categoryId) async {
     final doc = await _categoryCollectionRef.doc(categoryId).get();
     String category = doc.get('category');

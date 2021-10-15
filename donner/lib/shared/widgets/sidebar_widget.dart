@@ -99,7 +99,9 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                   enabled: widget.user == null ? false : true,
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, "/my_posts");
+                  },
                   leading: ImageIcon(
                     const AssetImage('assets/mini_logo_donner.png'),
                     color: widget.user == null ? Colors.grey : AppColors.primary,
