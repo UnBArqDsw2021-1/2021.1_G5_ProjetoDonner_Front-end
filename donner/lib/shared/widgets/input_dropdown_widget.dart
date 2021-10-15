@@ -9,7 +9,7 @@ class InputDropdownWidget extends StatefulWidget {
   final List<String> items;
   final String hint;
   final String? Function(String?)? validator;
-
+  final String? currentItem;
 
   InputDropdownWidget({
     Key? key,
@@ -19,8 +19,8 @@ class InputDropdownWidget extends StatefulWidget {
     this.state,
     required this.enable,
     this.validator,
+    this.currentItem,
   }) : super(key: key);
-
   @override
   _InputDropdownWidgetState createState() => _InputDropdownWidgetState();
 }
@@ -54,6 +54,7 @@ class _InputDropdownWidgetState extends State<InputDropdownWidget> {
               style: const TextStyle(color: AppColors.backgroundColor)),
         ),
         items: widget.items,
+        selectedItem: widget.currentItem,
       ),
     );
   }

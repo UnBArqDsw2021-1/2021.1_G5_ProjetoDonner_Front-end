@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.65,
                   ),
-                  itemCount: 8,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final announcement = AnnouncementModel.fromDocument(
                         snapshot.data!.docs[index]);
@@ -99,8 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomBarWidget(
         onTapHome: () {},
-        onTapPerson: () {
-          Navigator.pushNamed(context, '/my_posts');
+        onTapPerson: () async {
+          String userId = Authentication().getUser()!.uid;
+          DocumentSnapshot user = await FirestoreService().findUser(userId);
+          Navigator.pushNamed(context, '/profile',
+              arguments: ClientModel.fromSnapshot(user));
         },
       ),
 
