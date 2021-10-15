@@ -21,10 +21,13 @@ class PostScreen extends StatelessWidget {
         elevation: 0,
         leading: GestureDetector(
             onTap: () {
-              if(Navigator.canPop(context)){
+              if (Navigator.canPop(context)) {
                 Navigator.pop(context);
               } else {
-                Navigator.pushReplacementNamed(context, '/home', );
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/home',
+                );
               }
             },
             child: const Icon(
@@ -160,7 +163,7 @@ class PostScreen extends StatelessWidget {
                   ),
                 ),
                 FutureBuilder<DocumentSnapshot>(
-                  future: FirestoreService().findUser(announcement.owner!),
+                  future: FirestoreService().getDocUser(announcement.owner!),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());

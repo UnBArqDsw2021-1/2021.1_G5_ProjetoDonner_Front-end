@@ -16,11 +16,16 @@ class FirestoreService {
     await _userCollectionRef.doc(uid).set(data).catchError((e) => print(e));
   }
 
-  Future<DocumentSnapshot> findUser(String uid) async {
+  Future<DocumentSnapshot> getDocUser(String uid) async {
     final user = await _userCollectionRef.doc(uid).get();
     if (user.exists) {
       return user;
     }
+    return user;
+  }
+
+  Future<DocumentSnapshot?> findUser(String uid) async {
+    final user = await _userCollectionRef.doc(uid).get();
     return user;
   }
 

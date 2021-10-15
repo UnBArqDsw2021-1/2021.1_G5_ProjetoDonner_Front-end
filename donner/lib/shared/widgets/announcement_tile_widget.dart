@@ -22,7 +22,7 @@ class AnnouncementTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: FirestoreService().findUser(announcement.owner!),
+      future: FirestoreService().getDocUser(announcement.owner!),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());

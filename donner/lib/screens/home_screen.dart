@@ -25,6 +25,26 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Map filters = {};
   @override
+  void initState() {
+    buildUser();
+    super.initState();
+  }
+
+  void buildUser() async {
+    if (Authentication().getUser() != null) {
+      final userExist =
+          await FirestoreService().getDocUser(Authentication().getUser()!.uid);
+      if (userExist.exists) {
+        widget.user = await Authentication().getUserInfo();
+      } else {
+        Navigator.pushNamed(context, "/register",
+            arguments: Authentication().getUser());
+      }
+    }
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -102,24 +122,35 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      drawer: FutureBuilder<ClientModel?>(
-        future: Authentication().getUserInfo(),
-        builder: (context, snap) {
-          if (snap.hasError) {
-            return SnackBar(
-              content: Text(snap.error.toString()),
-            );
-          } else {
-            return SidebarWidget(
-              user: snap.data,
-            );
-          }
-        },
-      ),
+      drawer: widget.user != null
+          ? FutureBuilder<ClientModel?>(
+              future: Authentication().getUserInfo(),
+              builder: (context, snap) {
+                if (snap.hasError) {
+                  return SnackBar(
+                    content: Text(snap.error.toString()),
+                  );
+                } else {
+                  return SidebarWidget(
+                    user: snap.data,
+                  );
+                }
+              },
+            )
+          : const SidebarWidget(
+              user: null,
+            ),
       floatingActionButton: FloatingButton(
-        onPressed: () {
+        onPressed: () async {
           if (Authentication().getUser() != null) {
-            Navigator.pushNamed(context, "/create_post");
+            final userExist = await FirestoreService()
+                .findUser(Authentication().getUser()!.uid);
+            if (userExist!.exists) {
+              Navigator.pushNamed(context, "/create_post");
+            } else {
+              Navigator.pushNamed(context, "/register",
+                  arguments: Authentication().getUser());
+            }
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(

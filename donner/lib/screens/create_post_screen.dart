@@ -107,64 +107,72 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         centerTitle: true,
         elevation: 0,
         leading: GestureDetector(
-            onTap: () {
-              if (!loading) Navigator.of(context).pop();
-            },
-            child: const Icon(
-              FontAwesomeIcons.chevronLeft,
-              color: AppColors.secondary,
-              size: 30,
-            )),
+          onTap: () {
+            if (!loading) Navigator.of(context).pop();
+          },
+          child: const Icon(
+            FontAwesomeIcons.chevronLeft,
+            color: AppColors.secondary,
+            size: 30,
+          ),
+        ),
       ),
-      body: Stack(children: [
-        loading
-            ? Container(
-                color: Colors.transparent,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              )
-            : SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Form(
-                    key: controller.formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(height: containerHeight),
-                        InputDropdownWidget(
-                            validator: controller.validateDonationType,
-                            onChanged: (value) {
-                              setState(() {
-                                bool isDonation =
-                                    value!.compareTo('Doação') != 0
-                                        ? false
-                                        : true;
-                                controller.onChange(isDonation: isDonation);
-                              });
-                            },
-                            hint: "Tipo do Post",
-                            items: const <String>["Doação", "Pedido"],
-                            enable: true),
-                        Container(height: containerHeight),
-                        Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.5),
-                            borderRadius: BorderRadius.circular(5),
+      body: Stack(
+        children: [
+          loading
+              ? Container(
+                  color: Colors.transparent,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Form(
+                      key: controller.formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            height: containerHeight,
                           ),
-                          child: TextButton(
+                          InputDropdownWidget(
+                              validator: controller.validateDonationType,
+                              onChanged: (value) {
+                                setState(() {
+                                  bool isDonation =
+                                      value!.compareTo('Doação') != 0
+                                          ? false
+                                          : true;
+                                  controller.onChange(isDonation: isDonation);
+                                });
+                              },
+                              hint: "Tipo do Post",
+                              items: const <String>["Doação", "Pedido"],
+                              enable: true),
+                          Container(
+                            height: containerHeight,
+                          ),
+                          Container(
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 0.5),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: TextButton(
                               onPressed: () async {
                                 final result = await Navigator.pushNamed(
                                     context, '/category') as CategoryModel?;
-                                setState(() {
-                                  if (result != null) {
-                                    widget.category = result;
-                                    controller.onChange(
-                                        categoryId: widget.category!.id);
-                                  }
-                                });
+                                setState(
+                                  () {
+                                    if (result != null) {
+                                      widget.category = result;
+                                      controller.onChange(
+                                          categoryId: widget.category!.id);
+                                    }
+                                  },
+                                );
                               },
                               child: Row(
                                 mainAxisAlignment:
@@ -182,77 +190,91 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     color: AppColors.primary,
                                   )
                                 ],
-                              )),
-                        ),
-                        Container(height: containerHeight),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: Text("Foto:", style: AppTextStyles.bodyText),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 0.5,
-                                color: AppColors.stroke,
                               ),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Center(child: viewImage),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 5),
-                          child: Text(
-                            "Título do anúncio:",
-                            style: AppTextStyles.bodyText,
-                            textAlign: TextAlign.left,
+                            ),
                           ),
-                        ),
-                        InputTextWidget(
-                          maxLength: 40,
-                          validator: controller.validateTitle,
-                          onChanged: (String value) {
-                            setState(() {
-                              controller.onChange(title: value);
-                            });
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 5,
+                          Container(height: containerHeight),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Text("Foto:", style: AppTextStyles.bodyText),
                           ),
-                          child: Text(
-                            "Descrição",
-                            style: AppTextStyles.bodyText,
-                            textAlign: TextAlign.left,
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 0.5,
+                                  color: AppColors.stroke,
+                                ),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Center(child: viewImage),
                           ),
-                        ),
-                        TextFormField(
-                          validator: controller.validateDescription,
-                          onChanged: (value) {
-                            setState(() {
-                              controller.onChange(description: value);
-                            });
-                          },
-                          maxLength: 500,
-                          maxLines: 9,
-                          decoration: InputDecoration(
-                            hintStyle: AppTextStyles.inputText,
-                            border: const OutlineInputBorder(
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 5),
+                            child: Text(
+                              "Título do anúncio:",
+                              style: AppTextStyles.bodyText,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          InputTextWidget(
+                            maxLength: 40,
+                            validator: controller.validateTitle,
+                            onChanged: (String value) {
+                              setState(
+                                () {
+                                  controller.onChange(title: value);
+                                },
+                              );
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 5,
+                            ),
+                            child: Text(
+                              "Descrição",
+                              style: AppTextStyles.bodyText,
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          TextFormField(
+                            validator: controller.validateDescription,
+                            onChanged: (value) {
+                              setState(
+                                () {
+                                  controller.onChange(description: value);
+                                },
+                              );
+                            },
+                            maxLength: 500,
+                            maxLines: 9,
+                            decoration: InputDecoration(
+                              hintStyle: AppTextStyles.inputText,
+                              border: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(5)),
-                                borderSide:
-                                    BorderSide(color: AppColors.stroke)),
-                            isDense: true,
+                                borderSide: BorderSide(
+                                  color: AppColors.stroke,
+                                ),
+                              ),
+                              isDense: true,
+                            ),
                           ),
-                        ),
-                        Container(height: 5),
-                        Center(child: sendButton),
-                        Container(height: 5),
-                      ],
+                          Container(
+                            height: 5,
+                          ),
+                          Center(
+                            child: sendButton,
+                          ),
+                          Container(
+                            height: 5,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-      ]),
+        ],
+      ),
     );
   }
 }
