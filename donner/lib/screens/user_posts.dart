@@ -50,13 +50,14 @@ class _UserPostsState extends State<UserPosts> {
                           children: <Widget>[
                             Image.network(
                               announcement.images!,
-                              height: 100,
+                              height: 200,
                             ),
                             Container(
                               padding: const EdgeInsets.all(8),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     announcement.title!,
@@ -68,16 +69,37 @@ class _UserPostsState extends State<UserPosts> {
                                 ],
                               ),
                             ),
-                            GestureDetector(
-                                onTap: () {
-                                  FirestoreService().deleteAnnouncement(announcement.id!);
-                                  setState(() {});
-                                },
-                                child: const Icon(
-                                  Icons.close,
-                                  color: Colors.red,
-                                  size: 30,
-                                )),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                GestureDetector(
+                                    onTap: () {
+                                      FirestoreService()
+                                          .deleteAnnouncement(announcement.id!);
+                                      setState(() {});
+                                    },
+                                    child: const Icon(
+                                      FontAwesomeIcons.trashAlt,
+                                      color: AppColors.terciary,
+                                      size: 30,
+                                    )),
+                                const SizedBox(height: 120,),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/edit_post',
+                                      arguments: announcement,
+                                    );
+                                  },
+                                  child: const Icon(
+                                    FontAwesomeIcons.edit,
+                                    color: AppColors.secondary,
+                                    size: 30,
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),
