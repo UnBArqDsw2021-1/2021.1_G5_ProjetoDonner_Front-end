@@ -69,7 +69,10 @@ class _UserPostsState extends State<UserPosts> {
                               ),
                             ),
                             GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  FirestoreService().deleteAnnouncement(announcement.id!);
+                                  setState(() {});
+                                },
                                 child: const Icon(
                                   Icons.close,
                                   color: Colors.red,
