@@ -21,8 +21,7 @@ class CreatePostScreen extends StatefulWidget {
   }
 
   @override
-  _CreatePostScreenState createState() =>
-      _CreatePostScreenState();
+  _CreatePostScreenState createState() => _CreatePostScreenState();
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
