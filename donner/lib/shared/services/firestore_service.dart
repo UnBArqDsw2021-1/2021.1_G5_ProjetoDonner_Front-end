@@ -28,7 +28,7 @@ class FirestoreService {
     return _categoryCollectionRef.get();
   }
 
-  Future addPost(AnnouncementModel announcement) async {
+  Future addAnnouncement(AnnouncementModel announcement) async {
     Map<String, dynamic> data = announcement.toMap();
 
     await _postCollectionRef
@@ -39,10 +39,6 @@ class FirestoreService {
 
   Future<QuerySnapshot> getAnnouncements() async {
     return _postCollectionRef.get();
-  }
-
-  Future<QuerySnapshot> getAnnouncementsByUserId(String userId) async {
-    return _postCollectionRef.where('owner', isEqualTo: userId).get();
   }
 
   Future<List<AnnouncementModel>> getUserAnnouncements(String userId) async {
@@ -66,11 +62,19 @@ class FirestoreService {
   Future<void> deleteAnnouncement(String announcementId) async {
     _postCollectionRef.doc(announcementId).delete();
   }
+
   Future updateUser({required ClientModel user}) async {
     Map<String, dynamic> data = user.toMap();
     await _userCollectionRef
         .doc(user.id)
         .update(data)
         .catchError((e) => print(e));
+  }
+
+  Future updateAnnouncement({required AnnouncementModel announcement}) async {
+    Map<String, dynamic> data = announcement.toMap();
+    await _postCollectionRef
+        .doc(announcement.id)
+        .update(data);
   }
 }

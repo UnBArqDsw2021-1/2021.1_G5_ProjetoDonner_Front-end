@@ -7,7 +7,6 @@ import 'package:donner/screens/edit_post_screen.dart';
 import 'package:donner/screens/edit_profile_screen.dart';
 import 'package:donner/screens/home_screen.dart';
 import 'package:donner/screens/login_screen.dart';
-import 'package:donner/screens/my_posts_screen.dart';
 import 'package:donner/screens/post_screen.dart';
 import 'package:donner/screens/profile_screen.dart';
 import 'package:donner/screens/register_screen.dart';

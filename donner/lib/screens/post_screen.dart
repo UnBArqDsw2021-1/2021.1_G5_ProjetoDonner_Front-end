@@ -67,11 +67,11 @@ class PostScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: Center(
                     child: Container(
-                      width: 250.0,
-                      height: 250.0,
+                      width: 300.0,
+                      height: 300.0,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitWidth,
                           image: NetworkImage(announcement.images!),
                         ),
                       ),
@@ -134,6 +134,22 @@ class PostScreen extends StatelessWidget {
                                 context,
                                 '/profile',
                                 arguments: owner,
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Ação necessita de login',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  elevation: 0,
+                                  behavior: SnackBarBehavior.floating,
+                                  width: 200,
+                                  backgroundColor: AppColors.primary,
+                                  duration: Duration(
+                                    milliseconds: 1500,
+                                  ),
+                                ),
                               );
                             }
                           },

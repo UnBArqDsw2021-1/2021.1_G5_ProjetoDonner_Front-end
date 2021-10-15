@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:donner/controllers/register_controller.dart';
+import 'package:donner/controllers/profile_controller.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
@@ -22,7 +22,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late RegisterController controller;
+  late ProfileController controller;
   EstadosMunicipiosController local = EstadosMunicipiosController();
   List<String> states = [];
   List<String> cities = [];
@@ -34,7 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
-    controller = RegisterController.update(client: widget.user);
+    controller = ProfileController.update(client: widget.user);
     state = widget.user.state;
     city = widget.user.city;
     listCities(state!);

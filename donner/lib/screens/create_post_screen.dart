@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:donner/controllers/authentication.dart';
-import 'package:donner/controllers/create_post_controller.dart';
+import 'package:donner/controllers/announcement_controller.dart';
 import 'package:donner/models/category_model.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
@@ -21,18 +21,19 @@ class CreatePostScreen extends StatefulWidget {
   }
 
   @override
-  _CreatePostScreenState createState() => _CreatePostScreenState();
+  _CreatePostScreenState createState() =>
+      _CreatePostScreenState();
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
   XFile? image;
   bool? isDonation;
-  late CreatePostController controller;
+  late AnnouncementController controller;
   bool loading = false;
   final FactoryButton btn = FactoryButton();
   @override
   void initState() {
-    controller = CreatePostController(widget.user!.uid);
+    controller = AnnouncementController(widget.user!.uid);
     super.initState();
   }
 

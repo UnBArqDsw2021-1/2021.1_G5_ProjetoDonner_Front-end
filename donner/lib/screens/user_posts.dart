@@ -1,3 +1,4 @@
+import 'package:donner/controllers/announcement_controller.dart';
 import 'package:donner/controllers/authentication.dart';
 import 'package:donner/models/announcement_model.dart';
 import 'package:donner/models/client_model.dart';
@@ -8,6 +9,7 @@ import 'package:donner/shared/widgets/announcement_tile_widget.dart';
 import 'package:donner/shared/widgets/bottom_bar/bottom_bar_widget.dart';
 import 'package:donner/shared/widgets/bottom_bar/floating_button_widget.dart';
 import 'package:donner/shared/widgets/sidebar_widget.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -77,10 +79,9 @@ class _UserPostsState extends State<UserPosts> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               GestureDetector(
-                                  onTap: () {
-                                    FirestoreService()
+                                  onTap: () async{
+                                    await FirestoreService()
                                         .deleteAnnouncement(announcement.id!);
-                                    setState(() {});
                                   },
                                   child: const Icon(
                                     FontAwesomeIcons.trashAlt,

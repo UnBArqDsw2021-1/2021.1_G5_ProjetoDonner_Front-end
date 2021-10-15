@@ -80,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
           if (Authentication().getUser() != null) {
             Navigator.pushNamed(context, "/create_post");
           } else {
-            // Navigator.pushNamed(context, "/login");
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
