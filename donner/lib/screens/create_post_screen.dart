@@ -208,6 +208,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           ),
                         ),
                         InputTextWidget(
+                          maxLength: 40,
                           validator: controller.validateTitle,
                           onChanged: (String value) {
                             setState(() {
@@ -217,7 +218,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 10,
                             bottom: 5,
                           ),
                           child: Text(

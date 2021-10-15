@@ -79,9 +79,13 @@ class _UserPostsState extends State<UserPosts> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               GestureDetector(
-                                  onTap: () async{
-                                    await FirestoreService()
+                                  onTap: () async {
+                                    FirebaseStorage.instance
+                                        .refFromURL(announcement.images!)
+                                        .delete();
+                                    FirestoreService()
                                         .deleteAnnouncement(announcement.id!);
+                                    setState(() {});
                                   },
                                   child: const Icon(
                                     FontAwesomeIcons.trashAlt,
@@ -133,7 +137,7 @@ class _UserPostsState extends State<UserPosts> {
             );
           },
           onTapHome: () {
-            // Navigator.popUntil(context, ModalRoute.withName('/home'));
+            Navigator.popUntil(context, ModalRoute.withName('/home'));
           },
         ));
   }

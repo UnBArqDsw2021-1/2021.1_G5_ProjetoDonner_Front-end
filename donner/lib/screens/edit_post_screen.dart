@@ -123,6 +123,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                             ),
                           ),
                           InputTextWidget(
+                            maxLength: 40,
                             validator: controller.validateTitle,
                             initialValue: widget.announcement.title,
                             onChanged: (String value) {

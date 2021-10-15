@@ -78,7 +78,6 @@ class AnnouncementController {
       final url = await storageRef
           .getDownloadURL()
           .catchError((e) => SnackBar(content: Text(e.toString())));
-      // print("url: $url");
       onChange(images: url);
     } on FirebaseException catch (e) {
       return SnackBar(content: Text(e.toString()));
@@ -87,7 +86,7 @@ class AnnouncementController {
 
   Future<XFile?> chooseImage() async {
     final ImagePicker _picker = ImagePicker();
-    return _picker.pickImage(source: ImageSource.gallery, imageQuality: 0);
+    return _picker.pickImage(source: ImageSource.gallery, imageQuality: 0, maxWidth: 400, maxHeight: 400);
   }
 
   Future<void> updatePost(context) async {
