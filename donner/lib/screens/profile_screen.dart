@@ -1,5 +1,7 @@
 import 'package:donner/controllers/authentication.dart';
+import 'package:donner/models/announcement_model.dart';
 import 'package:donner/models/client_model.dart';
+import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/info_tile_widget.dart';
@@ -23,14 +25,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Color> colorCodes = [
-      AppColors.primary,
-      AppColors.secondary,
-      AppColors.stroke,
-      AppColors.primary,
-      AppColors.secondary,
-      AppColors.stroke,
-    ];
+    bool isCurrentUser = Authentication().getUser() != null &&
+        widget.user.id == Authentication().getUser()!.uid;
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -44,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: AppColors.secondary,
                 size: 30,
               )),
-          actions: (Authentication().getUser() != null && widget.user.id == Authentication().getUser()!.uid)
+          actions: (isCurrentUser)
               ? [
                   Padding(
                     padding: const EdgeInsets.only(right: 20),
@@ -96,15 +93,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(
                       width: 20,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Authentication().signOut(context);
-                      },
-                      child: const Icon(
-                        Icons.logout,
-                        color: AppColors.primary,
-                      ),
-                    ),
+                    isCurrentUser
+                        ? GestureDetector(
+                            onTap: () {
+                              Authentication().signOut(context);
+                            },
+                            child: const Icon(
+                              Icons.logout,
+                              color: AppColors.primary,
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -168,10 +167,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15),
-                child: Text(
-                  "DOANDO AGORA",
-                  style: AppTextStyles.bodyText,
-                  textAlign: TextAlign.left,
+                child: GestureDetector(
+                  onTap: () {
+                    if (isCurrentUser)
+                      Navigator.pushNamed(context, '/user_posts',
+                          arguments: widget.user.id);
+                  },
+                  child: Text(
+                    "DOANDO AGORA",
+                    style: AppTextStyles.bodyText,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
               const Divider(thickness: 0.5, color: AppColors.stroke),
@@ -190,24 +196,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 ),
-                child: SizedBox(
-                  height: 125,
-                  child: ListView.separated(
-                    itemCount: colorCodes.length,
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.all(10),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        width: 120,
-                        color: colorCodes[index],
+                child: FutureBuilder<List<AnnouncementModel>>(
+                    future:
+                        FirestoreService().getUserAnnouncements(widget.user.id),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData)
+                        return Center(child: CircularProgressIndicator());
+                      final items = snapshot.data;
+                      return ListView.separated(
+                        itemCount: snapshot.data!.length,
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.all(10),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  '/post', ModalRoute.withName('/home'),
+                                  arguments: snapshot.data![index]);
+                            },
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Flexible(
+                                    flex: 5,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(5),
+                                            topRight: Radius.circular(5)),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              items![index].images!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      width: 120,
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Container(
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.secondary,
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(5),
+                                            bottomRight: Radius.circular(5))),
+                                    child: Text(
+                                      items[index].title!,
+                                      style: AppTextStyles.cardTextSmall,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ))
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const SizedBox(
+                          width: 10,
+                        ),
                       );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                      width: 15,
-                    ),
-                  ),
-                ),
+                    }),
               ),
             ],
           ),

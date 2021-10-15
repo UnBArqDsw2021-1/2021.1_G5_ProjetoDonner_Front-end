@@ -41,7 +41,7 @@ class PostScreen extends StatelessWidget {
                     },
                     icon: const Icon(
                       FontAwesomeIcons.edit,
-                      color: AppColors.secondary,
+                      color: AppColors.primary,
                       size: 30,
                     ),
                   ),
@@ -60,6 +60,7 @@ class PostScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     announcement.title!,
+                    textAlign: TextAlign.center,
                     style: AppTextStyles.secondaryPageTitleText,
                   ),
                 ),
