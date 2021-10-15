@@ -27,21 +27,13 @@ class EditPostScreen extends StatefulWidget {
 class _EditPostScreenState extends State<EditPostScreen> {
   XFile? image;
   bool? isDonation;
-  String? category;
   late CreatePostController controller;
   bool loading = false;
   final FactoryButton btn = FactoryButton();
   @override
   void initState() {
-    loadCategory();
     controller = CreatePostController(widget.announcement.owner!);
     super.initState();
-  }
-
-  void loadCategory() async {
-    category = await FirestoreService()
-        .getCategoryById(widget.announcement.categoryId!);
-    setState(() {});
   }
 
   @override
@@ -50,27 +42,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
     double imageHeight = 200;
 
     Widget sendButton = btn.getButton(
-      onPressed: () async {
-        // final form = controller.formKey.currentState;
-        // if (form!.validate() && image != null && widget.category != null) {
-        //   setState(() {
-        //     loading = true;
-        //   });
-        //   await controller.uploadFile(image!.path);
-        //   await controller.savePost(context);
-        // } else {
-        //   if (widget.category == null) {
-        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //       content: Text(controller.validateCategory(null)!),
-        //     ));
-        //   }
-        //   if (image == null) {
-        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        //       content: Text(controller.validateImages(null)!),
-        //     ));
-        //   }
-        // }
-      },
+      onPressed: () async {},
       text: "Atualizar",
       color: AppColors.primary,
       textStyle: AppTextStyles.btnFillText,
@@ -124,45 +96,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(height: containerHeight),
-                        Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border.all(width: 0.5),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: TextButton(
-                              onPressed: () async {
-                                final newCategory = await Navigator.pushNamed(
-                                    context, '/category') as CategoryModel?;
-                                setState(
-                                  () {
-                                    if (newCategory != null) {
-                                      category = newCategory.category;
-                                      controller.onChange(
-                                          categoryId: newCategory.id);
-                                    }
-                                  },
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    category!,
-                                    style: AppTextStyles.bodyText,
-                                  ),
-                                  const Icon(
-                                    Icons.expand_more_outlined,
-                                    color: AppColors.primary,
-                                  )
-                                ],
-                              )),
-                        ),
-                        Container(height: containerHeight),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
+                          padding: const EdgeInsets.only(bottom: 5, top: 15),
                           child: Text("Foto:", style: AppTextStyles.bodyText),
                         ),
                         Container(
@@ -184,6 +119,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                         ),
                         InputTextWidget(
                           validator: controller.validateTitle,
+                          initialValue: widget.announcement.title,
                           onChanged: (String value) {
                             setState(() {
                               controller.onChange(title: value);
@@ -216,10 +152,13 @@ class _EditPostScreenState extends State<EditPostScreen> {
                           decoration: InputDecoration(
                             hintStyle: AppTextStyles.inputText,
                             border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                                borderSide:
-                                    BorderSide(color: AppColors.stroke)),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                              borderSide: BorderSide(
+                                color: AppColors.stroke,
+                              ),
+                            ),
                             isDense: true,
                           ),
                         ),

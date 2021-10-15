@@ -9,7 +9,7 @@ class InputDropdownWidget extends StatefulWidget {
   final List<String> items;
   final String hint;
   final String? Function(String?)? validator;
-
+  final String? currentItem;
 
   InputDropdownWidget({
     Key? key,

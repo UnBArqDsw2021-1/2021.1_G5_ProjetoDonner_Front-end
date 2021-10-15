@@ -61,9 +61,12 @@ class AnnouncementTileWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "${snapshot.data!.get('city')} - ${snapshot.data!.get('state')}",
-                                  style: AppTextStyles.inputText,
+                                Flexible(
+                                  child: Text(
+                                    "${snapshot.data!.get('city')} - ${snapshot.data!.get('state')}",
+                                    style: AppTextStyles.inputText,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () {},

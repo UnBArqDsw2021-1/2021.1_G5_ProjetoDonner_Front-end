@@ -48,11 +48,9 @@ class AppWidget extends StatelessWidget {
                   as AnnouncementModel,
             ),
         "/category": (context) => const CategoryScreen(),
-
-            user: ModalRoute.of(context)!.settings.arguments as User),
         "/profile": (context) => ProfileScreen(
             user: ModalRoute.of(context)!.settings.arguments as ClientModel),
-        "/edit": (context) => EditProfileScreen(
+        "/edit_profile": (context) => EditProfileScreen(
             user: ModalRoute.of(context)!.settings.arguments as ClientModel),
       },
     );

@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: () {
                         Navigator.pushNamed(
                           context,
-                          "/edit",
+                          "/edit_profile",
                           arguments: widget.user,
                         );
                       },

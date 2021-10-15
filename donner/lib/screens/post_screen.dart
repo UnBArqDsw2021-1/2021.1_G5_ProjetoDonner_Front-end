@@ -29,7 +29,8 @@ class PostScreen extends StatelessWidget {
               color: AppColors.secondary,
               size: 30,
             )),
-        actions: (announcement.owner == Authentication().getUser()!.uid)
+        actions: (Authentication().getUser() != null &&
+                announcement.owner == Authentication().getUser()!.uid)
             ? [
                 Padding(
                   padding: const EdgeInsets.only(right: 20),
