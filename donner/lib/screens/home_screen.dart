@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.65,
                   ),
-                  itemCount: 8,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final announcement = AnnouncementModel.fromDocument(
                         snapshot.data!.docs[index]);
@@ -80,16 +80,18 @@ class _HomeScreenState extends State<HomeScreen> {
           if (Authentication().getUser() != null) {
             Navigator.pushNamed(context, "/create_post");
           } else {
-            // Navigator.pushNamed(context, "/login");
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Ação necessita de login'),
+                content: Text(
+                  'Ação necessita de login',
+                  textAlign: TextAlign.center,
+                ),
                 elevation: 0,
                 behavior: SnackBarBehavior.floating,
                 width: 200,
                 backgroundColor: AppColors.primary,
                 duration: Duration(
-                  seconds: 1,
+                  milliseconds: 1500,
                 ),
               ),
             );
@@ -99,11 +101,22 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomBarWidget(
         onTapHome: () {},
-        onTapPerson: () {
-          Navigator.pushNamed(context, '/my_posts');
+        onTapPerson: () async {
+          if (Authentication().getUser() != null) {
+            ClientModel? client = await Authentication().getUserInfo();
+            Navigator.pushNamed(
+              context,
+              '/profile',
+              arguments: client!,
+            );
+          } else {
+            Navigator.pushReplacementNamed(
+              context,
+              '/login',
+            );
+          }
         },
       ),
-
     );
   }
 }

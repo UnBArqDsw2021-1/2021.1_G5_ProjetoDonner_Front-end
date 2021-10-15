@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
 
-class RegisterController {
+class ProfileController {
   final formKey = GlobalKey<FormState>();
   final User? user;
   ClientModel? client;
 
-  RegisterController(this.user, {this.client}) {
+  ProfileController(this.user, {this.client}) {
     client = ClientModel(
         id: user!.uid,
         name: user!.displayName,
@@ -18,7 +18,7 @@ class RegisterController {
         photoUrl: user!.photoURL);
   }
 
-  RegisterController.update({required this.client, this.user}) {
+  ProfileController.update({required this.client, this.user}) {
     client = ClientModel(
         id: client!.id,
         name: client!.name,

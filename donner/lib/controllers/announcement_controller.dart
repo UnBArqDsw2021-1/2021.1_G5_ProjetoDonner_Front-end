@@ -2,19 +2,32 @@ import 'dart:io';
 
 import 'package:donner/models/announcement_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
+import 'package:donner/shared/themes/app_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class CreatePostController {
+class AnnouncementController {
   final formKey = GlobalKey<FormState>();
   AnnouncementModel? announcement;
 
-  CreatePostController(String owner) {
+  AnnouncementController(String owner) {
     announcement = AnnouncementModel(
       owner: owner,
       id: DateTime.now().millisecondsSinceEpoch.toString() + owner,
+    );
+  }
+
+  AnnouncementController.update({required this.announcement}) {
+    announcement = AnnouncementModel(
+      owner: announcement!.owner,
+      id: announcement!.id,
+      categoryId: announcement!.categoryId,
+      isDonation: announcement!.isDonation,
+      images: announcement!.images,
+      title: announcement!.title,
+      description: announcement!.description,
     );
   }
 
@@ -56,7 +69,7 @@ class CreatePostController {
       final storageRef = FirebaseStorage.instance
           .ref()
           .child(announcement!.id!)
-          .child(DateTime.now().millisecondsSinceEpoch.toString());
+          .child(announcement!.id!);
 
       final uploadTask = await storageRef
           .putFile(File(images))
@@ -65,7 +78,6 @@ class CreatePostController {
       final url = await storageRef
           .getDownloadURL()
           .catchError((e) => SnackBar(content: Text(e.toString())));
-      // print("url: $url");
       onChange(images: url);
     } on FirebaseException catch (e) {
       return SnackBar(content: Text(e.toString()));
@@ -74,14 +86,45 @@ class CreatePostController {
 
   Future<XFile?> chooseImage() async {
     final ImagePicker _picker = ImagePicker();
-    return _picker.pickImage(source: ImageSource.gallery);
+    return _picker.pickImage(source: ImageSource.gallery, imageQuality: 0, maxWidth: 400, maxHeight: 400);
+  }
+
+  Future<void> updatePost(context) async {
+    await FirestoreService().updateAnnouncement(announcement: announcement!);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text(
+        "Anunciado criado com sucesso!",
+        textAlign: TextAlign.center,
+      ),
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      width: 200,
+      backgroundColor: AppColors.primary,
+      duration: const Duration(
+        milliseconds: 1500,
+      ),
+    ));
+
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/home", ModalRoute.withName('/home'));
   }
 
   Future<void> savePost(BuildContext context) async {
-    final sucess = await FirestoreService().addPost(announcement!);
-    if (sucess != null)
-      Navigator.pushReplacementNamed(context, "/home");
-    else
-      Navigator.pushReplacementNamed(context, "/home");
+    await FirestoreService().addAnnouncement(announcement!);
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text(
+        "Anunciado criado com sucesso!",
+        textAlign: TextAlign.center,
+      ),
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      width: 200,
+      backgroundColor: AppColors.primary,
+      duration: const Duration(
+        milliseconds: 1500,
+      ),
+    ));
+    Navigator.pushReplacementNamed(context, "/home");
   }
 }

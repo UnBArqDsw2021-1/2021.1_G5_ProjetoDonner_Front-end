@@ -55,7 +55,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
 
-    static final bodyTextSmall = GoogleFonts.inter(
+  static final bodyTextSmall = GoogleFonts.inter(
     fontSize: 12.0,
     color: AppColors.textTitleColor,
     fontWeight: FontWeight.w400,
@@ -64,6 +64,12 @@ class AppTextStyles {
   static final linkTextSmall = GoogleFonts.inter(
     fontSize: 12.0,
     color: AppColors.secondary,
+    fontWeight: FontWeight.w400,
+  );
+
+  static final cardTextSmall = GoogleFonts.inter(
+    fontSize: 12.0,
+    color: AppColors.backgroundColor,
     fontWeight: FontWeight.w400,
   );
 

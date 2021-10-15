@@ -10,6 +10,7 @@ class InputTextWidget extends StatelessWidget {
   final String? Function(String?)? validator;
   final List<TextInputFormatter>? formatter;
   final void Function(String value) onChanged;
+  final int? maxLength;
 
   const InputTextWidget({
     Key? key,
@@ -20,6 +21,7 @@ class InputTextWidget extends StatelessWidget {
     this.formatter,
     required this.onChanged,
     this.keyboardType,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class InputTextWidget extends StatelessWidget {
       inputFormatters: formatter,
       validator: validator,
       initialValue: initialValue,
+      maxLength: maxLength,
       decoration: InputDecoration(
           contentPadding: icon != null
               ? const EdgeInsets.symmetric(vertical: 10)

@@ -41,7 +41,7 @@ class PostScreen extends StatelessWidget {
                     },
                     icon: const Icon(
                       FontAwesomeIcons.edit,
-                      color: AppColors.secondary,
+                      color: AppColors.primary,
                       size: 30,
                     ),
                   ),
@@ -60,6 +60,7 @@ class PostScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     announcement.title!,
+                    textAlign: TextAlign.center,
                     style: AppTextStyles.secondaryPageTitleText,
                   ),
                 ),
@@ -67,11 +68,11 @@ class PostScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: Center(
                     child: Container(
-                      width: 250.0,
-                      height: 250.0,
+                      width: 300.0,
+                      height: 300.0,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitWidth,
                           image: NetworkImage(announcement.images!),
                         ),
                       ),
@@ -129,11 +130,29 @@ class PostScreen extends StatelessWidget {
                         const Divider(thickness: 0.5, color: AppColors.stroke),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              '/profile',
-                              arguments: owner,
-                            );
+                            if (Authentication().getUser() != null) {
+                              Navigator.pushNamed(
+                                context,
+                                '/profile',
+                                arguments: owner,
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Ação necessita de login',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  elevation: 0,
+                                  behavior: SnackBarBehavior.floating,
+                                  width: 200,
+                                  backgroundColor: AppColors.primary,
+                                  duration: Duration(
+                                    milliseconds: 1500,
+                                  ),
+                                ),
+                              );
+                            }
                           },
                           child: Container(
                             alignment: Alignment.topLeft,

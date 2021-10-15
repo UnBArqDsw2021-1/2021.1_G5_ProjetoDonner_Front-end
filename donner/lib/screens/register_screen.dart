@@ -1,4 +1,4 @@
-import 'package:donner/controllers/register_controller.dart';
+import 'package:donner/controllers/profile_controller.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
 import 'package:donner/shared/widgets/button_widget/custom_text_button.dart';
@@ -17,7 +17,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  late RegisterController controller;
+  late ProfileController controller;
   late EstadosMunicipiosController local;
   List<String> states = [];
   List<String> cities = [];
@@ -27,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     super.initState();
     local = EstadosMunicipiosController();
-    controller = RegisterController(widget.user);
+    controller = ProfileController(widget.user);
     listStates();
   }
 
