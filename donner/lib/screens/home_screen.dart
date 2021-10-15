@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 import 'package:donner/controllers/authentication.dart';
 import 'package:donner/models/announcement_model.dart';
+import 'package:donner/models/category_model.dart';
 import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
@@ -8,59 +11,92 @@ import 'package:donner/shared/widgets/announcement_tile_widget.dart';
 import 'package:donner/shared/widgets/bottom_bar/bottom_bar_widget.dart';
 import 'package:donner/shared/widgets/bottom_bar/floating_button_widget.dart';
 import 'package:donner/shared/widgets/sidebar_widget.dart';
-import 'package:flutter/material.dart';
+import 'package:donner/shared/widgets/top_bar_widget/top_bar_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   ClientModel? user;
-  HomeScreen({Key? key, this.user}) : super(key: key);
+  CategoryModel? category;
+  HomeScreen({Key? key, this.user, this.category}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Map filters = {};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primary,
+        elevation: 0,
       ),
-      body: FutureBuilder<QuerySnapshot>(
-          future: FirestoreService().getAnnouncements(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TopBarWidget(
+            onTapFilter: () async {
+              final result =
+                  await Navigator.pushNamed(context, '/filter') as Map?;
+              if (result != null) {
+                setState(() {
+                  filters = result;
+                });
+              }
+            },
+            category: widget.category,
+            onTapCategory: () async {
+              final result = await Navigator.pushNamed(context, '/category')
+                  as CategoryModel?;
+              setState(
+                () {
+                  widget.category = result;
+                  print(widget.category);
+                },
               );
-            } else {
-              return GridView.builder(
-                  padding: EdgeInsets.all(10),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 4,
-                    mainAxisSpacing: 4,
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.65,
-                  ),
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context, index) {
-                    final announcement = AnnouncementModel.fromDocument(
-                        snapshot.data!.docs[index]);
-                    return InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          '/post',
-                          arguments: announcement,
-                        );
-                      },
-                      child: AnnouncementTileWidget(
-                        type: "grid",
-                        announcement: announcement,
-                      ),
+            },
+          ),
+          Expanded(
+            child: FutureBuilder<QuerySnapshot>(
+                future: FirestoreService().getAnnouncements(filters),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
-                  });
-            }
-          }),
+                  } else {
+                    return GridView.builder(
+                        padding: EdgeInsets.all(10),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisSpacing: 4,
+                          mainAxisSpacing: 4,
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.65,
+                        ),
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final announcement = AnnouncementModel.fromDocument(
+                              snapshot.data!.docs[index]);
+                          return InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/post',
+                                arguments: announcement,
+                              );
+                            },
+                            child: AnnouncementTileWidget(
+                              type: "grid",
+                              announcement: announcement,
+                            ),
+                          );
+                        });
+                  }
+                }),
+          ),
+        ],
+      ),
       drawer: FutureBuilder<ClientModel?>(
         future: Authentication().getUserInfo(),
         builder: (context, snap) {

@@ -37,7 +37,8 @@ class FirestoreService {
         .catchError((e) => print(e));
   }
 
-  Future<QuerySnapshot> getAnnouncements() async {
+  Future<QuerySnapshot> getAnnouncements(Map filters) async {
+    
     return _postCollectionRef.get();
   }
 
@@ -73,8 +74,6 @@ class FirestoreService {
 
   Future updateAnnouncement({required AnnouncementModel announcement}) async {
     Map<String, dynamic> data = announcement.toMap();
-    await _postCollectionRef
-        .doc(announcement.id)
-        .update(data);
+    await _postCollectionRef.doc(announcement.id).update(data);
   }
 }

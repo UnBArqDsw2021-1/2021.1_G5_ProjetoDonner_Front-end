@@ -81,10 +81,29 @@ class PostScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: Text(
-                    "DESCRIÇÂO",
-                    style: AppTextStyles.bodyText,
-                    textAlign: TextAlign.left,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "DESCRIÇÂO",
+                        style: AppTextStyles.bodyText,
+                        textAlign: TextAlign.left,
+                      ),
+                      Container(
+                          width: 60,
+                          padding: EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              color: announcement.isDonation!
+                                  ? AppColors.secondary
+                                  : AppColors.primary,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Center(
+                            child: Text(
+                              announcement.isDonation! ? 'Doação' : 'Pedido',
+                              style: AppTextStyles.bodyTextSmallFill,
+                            ),
+                          ))
+                    ],
                   ),
                 ),
                 const Divider(thickness: 0.5, color: AppColors.stroke),
