@@ -5,7 +5,6 @@ import 'package:donner/models/client_model.dart';
 import 'package:donner/shared/services/firestore_service.dart';
 import 'package:donner/shared/themes/app_colors.dart';
 import 'package:donner/shared/themes/app_text_styles.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,7 +21,14 @@ class PostScreen extends StatelessWidget {
         elevation: 0,
         leading: GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              } else {
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/home',
+                );
+              }
             },
             child: const Icon(
               FontAwesomeIcons.chevronLeft,
@@ -81,10 +87,58 @@ class PostScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: Text(
-                    "DESCRIÇÂO",
-                    style: AppTextStyles.bodyText,
-                    textAlign: TextAlign.left,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "DESCRIÇÂO",
+                        style: AppTextStyles.bodyText,
+                        textAlign: TextAlign.left,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            // width: 60,
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                color: AppColors.terciary,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                              child: FutureBuilder<String>(
+                                future: FirestoreService()
+                                    .getCategoryById(announcement.categoryId!),
+                                builder: (context, snap) {
+                                  if (snap.hasData) {
+                                    return Text(
+                                      snap.data!,
+                                      style: AppTextStyles.bodyTextSmallFill,
+                                    );
+                                  }
+                                  return Container();
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                color: announcement.isDonation!
+                                    ? AppColors.secondary
+                                    : AppColors.primary,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                              child: Text(
+                                announcement.isDonation! ? 'Doação' : 'Pedido',
+                                style: AppTextStyles.bodyTextSmallFill,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
                 const Divider(thickness: 0.5, color: AppColors.stroke),
@@ -109,7 +163,7 @@ class PostScreen extends StatelessWidget {
                   ),
                 ),
                 FutureBuilder<DocumentSnapshot>(
-                  future: FirestoreService().findUser(announcement.owner!),
+                  future: FirestoreService().getDocUser(announcement.owner!),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());

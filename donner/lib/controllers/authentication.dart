@@ -54,7 +54,9 @@ class Authentication {
 
     if (_auth.currentUser != null) {
       final userDoc = await FirestoreService().findUser(_auth.currentUser!.uid);
-      client = ClientModel.fromSnapshot(userDoc);
+      if (userDoc != null) {
+        client = ClientModel.fromSnapshot(userDoc);
+      }
     }
     return client;
   }
@@ -62,7 +64,7 @@ class Authentication {
   Future<void> signUpOrSignIn(User? user, BuildContext context) async {
     if (user != null) {
       final userDoc = await FirestoreService().findUser(user.uid);
-      if (userDoc.exists) {
+      if (userDoc!.exists) {
         await Navigator.pushReplacementNamed(
           context,
           "/home",
@@ -83,7 +85,7 @@ class Authentication {
     try {
       await googleSignIn.signOut();
       await _auth.signOut();
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

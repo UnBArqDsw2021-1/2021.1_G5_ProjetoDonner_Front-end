@@ -85,7 +85,7 @@ class _SidebarWidgetState extends State<SidebarWidget> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, "/create_post");
+                    Navigator.pushNamed(context, "/create_post");
                   },
                   leading: Icon(
                     FontAwesomeIcons.plusSquare,

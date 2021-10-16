@@ -22,10 +22,11 @@ class AnnouncementTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-      future: FirestoreService().findUser(announcement.owner!),
+      future: FirestoreService().getDocUser(announcement.owner!),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
         return Card(
           elevation: 2,
           shape: RoundedRectangleBorder(
@@ -35,16 +36,31 @@ class AnnouncementTileWidget extends StatelessWidget {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AspectRatio(
-                      aspectRatio: 0.9,
-                      child: Image.network(
-                        announcement.images!,
-                        fit: BoxFit.cover,
+                    Stack(alignment: AlignmentDirectional.topEnd, children: [
+                      AspectRatio(
+                        aspectRatio: 0.9,
+                        child: Image.network(
+                          announcement.images!,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                            color: announcement.isDonation!
+                                ? AppColors.secondary
+                                : AppColors.primary,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Text(
+                          announcement.isDonation! ? "Doação" : "Pedido",
+                          style: AppTextStyles.bodyTextSmallFill,
+                        ),
+                      ),
+                    ]),
                     Expanded(
                         child: Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,7 +71,7 @@ class AnnouncementTileWidget extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
-                          Container(
+                          SizedBox(
                             height: 15,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -91,10 +107,25 @@ class AnnouncementTileWidget extends StatelessWidget {
                     children: [
                       Flexible(
                         flex: 1,
-                        child: Image.network(
-                          announcement.images!,
-                          height: 250,
-                        ),
+                        child: Stack(children: [
+                          Image.network(
+                            announcement.images!,
+                            height: 250,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                                color: announcement.isDonation!
+                                    ? AppColors.secondary
+                                    : AppColors.primary,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Text(
+                              announcement.isDonation! ? "Doação" : "Pedido",
+                              style: AppTextStyles.bodyTextSmallFill,
+                            ),
+                          ),
+                        ]),
                       ),
                       Flexible(
                         child: Container(
@@ -103,43 +134,14 @@ class AnnouncementTileWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 200,
-                                child: showExcludedButton
-                                    ? Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            announcement.title!,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                '/edit_post',
-                                                arguments: announcement,
-                                              );
-                                            },
-                                            child: Icon(
-                                              FontAwesomeIcons.edit,
-                                              color: AppColors.secondary,
-                                              size: 20,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : Text(
-                                        announcement.title!,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                                child: Text(
+                                  announcement.title!,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -150,26 +152,12 @@ class AnnouncementTileWidget extends StatelessWidget {
                                     style: AppTextStyles.inputText,
                                   ),
                                   GestureDetector(
-                                    onTap: () async {
-                                      if (showExcludedButton) {
-                                        await FirestoreService()
-                                            .deleteAnnouncement(
-                                                announcement.id!);
-                                        Navigator.pushReplacementNamed(
-                                            context, '/my_posts');
-                                      }
-                                    },
-                                    child: showExcludedButton
-                                        ? Icon(
-                                            FontAwesomeIcons.trashAlt,
-                                            color: AppColors.terciary,
-                                            size: 20,
-                                          )
-                                        : Icon(
-                                            FontAwesomeIcons.heart,
-                                            color: AppColors.secondary,
-                                            size: 20,
-                                          ),
+                                    onTap: () {},
+                                    child: const Icon(
+                                      FontAwesomeIcons.heart,
+                                      color: AppColors.secondary,
+                                      size: 20,
+                                    ),
                                   ),
                                 ],
                               )

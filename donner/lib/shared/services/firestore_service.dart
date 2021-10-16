@@ -16,11 +16,16 @@ class FirestoreService {
     await _userCollectionRef.doc(uid).set(data).catchError((e) => print(e));
   }
 
-  Future<DocumentSnapshot> findUser(String uid) async {
+  Future<DocumentSnapshot> getDocUser(String uid) async {
     final user = await _userCollectionRef.doc(uid).get();
     if (user.exists) {
       return user;
     }
+    return user;
+  }
+
+  Future<DocumentSnapshot?> findUser(String uid) async {
+    final user = await _userCollectionRef.doc(uid).get();
     return user;
   }
 
@@ -37,8 +42,42 @@ class FirestoreService {
         .catchError((e) => print(e));
   }
 
-  Future<QuerySnapshot> getAnnouncements() async {
-    return _postCollectionRef.get();
+  Future<QuerySnapshot> getAnnouncements(
+      {String? category, bool? isDonation, bool? date}) async {
+    if (category != null && isDonation != null && date != null) {
+      return _postCollectionRef
+          .where('categoryId', isEqualTo: category)
+          .where('isDonation', isEqualTo: isDonation)
+          .orderBy('id', descending: true)
+          .get();
+    }
+    if (category != null && isDonation != null) {
+      return _postCollectionRef
+          .where('categoryId', isEqualTo: category)
+          .where('isDonation', isEqualTo: isDonation)
+          .get();
+    }
+    if (category != null && date != null) {
+      return _postCollectionRef
+          .where('categoryId', isEqualTo: category)
+          .orderBy('id', descending: true)
+          .get();
+    }
+    if (isDonation != null && date != null) {
+      return _postCollectionRef
+          .where('isDonation', isEqualTo: isDonation)
+          .orderBy('id', descending: true)
+          .get();
+    }
+    if (category != null) {
+      return _postCollectionRef.where('categoryId', isEqualTo: category).get();
+    }
+    if (isDonation != null) {
+      return _postCollectionRef
+          .where('isDonation', isEqualTo: isDonation)
+          .get();
+    }
+    return _postCollectionRef.orderBy('id', descending: true).get();
   }
 
   Future<List<AnnouncementModel>> getUserAnnouncements(String userId) async {
@@ -73,8 +112,6 @@ class FirestoreService {
 
   Future updateAnnouncement({required AnnouncementModel announcement}) async {
     Map<String, dynamic> data = announcement.toMap();
-    await _postCollectionRef
-        .doc(announcement.id)
-        .update(data);
+    await _postCollectionRef.doc(announcement.id).update(data);
   }
 }

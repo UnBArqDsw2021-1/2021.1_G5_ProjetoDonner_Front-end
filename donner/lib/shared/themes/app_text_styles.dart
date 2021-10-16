@@ -61,6 +61,12 @@ class AppTextStyles {
     fontWeight: FontWeight.w400,
   );
 
+  static final bodyTextSmallFill = GoogleFonts.inter(
+    fontSize: 12.0,
+    color: AppColors.backgroundColor,
+    fontWeight: FontWeight.w400,
+  );
+
   static final linkTextSmall = GoogleFonts.inter(
     fontSize: 12.0,
     color: AppColors.secondary,
@@ -97,6 +103,11 @@ class AppTextStyles {
   );
   static final cardText = GoogleFonts.inter(
       fontSize: 14.0,
+      color: AppColors.headerTextColor,
+      fontWeight: FontWeight.w400);
+
+  static final tabBarText = GoogleFonts.inter(
+      fontSize: 18.0,
       color: AppColors.headerTextColor,
       fontWeight: FontWeight.w400);
 }

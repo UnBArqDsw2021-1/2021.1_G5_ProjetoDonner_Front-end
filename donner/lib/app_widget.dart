@@ -5,6 +5,7 @@ import 'package:donner/screens/category_screen.dart';
 import 'package:donner/screens/create_post_screen.dart';
 import 'package:donner/screens/edit_post_screen.dart';
 import 'package:donner/screens/edit_profile_screen.dart';
+import 'package:donner/screens/filter_screen.dart';
 import 'package:donner/screens/home_screen.dart';
 import 'package:donner/screens/login_screen.dart';
 import 'package:donner/screens/post_screen.dart';
@@ -48,6 +49,7 @@ class AppWidget extends StatelessWidget {
                   as AnnouncementModel,
             ),
         "/category": (context) => const CategoryScreen(),
+        "/filter": (context) => FilterScreen(),
         "/profile": (context) => ProfileScreen(
             user: ModalRoute.of(context)!.settings.arguments as ClientModel),
         "/edit_profile": (context) => EditProfileScreen(
