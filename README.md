@@ -83,5 +83,4 @@ Página do projeto, protótipo de média fidelidade
 (X) SIM  
 (_) NÃO  
 
-Para utilizar o app Donner basta baixar o arquivo apk mais recente na seção de releases do [repositório front-end](https://github.com/UnBArqDsw2021-1/2021.1_G5_ProjetoDonner_Front-end) e instalar em um dispositivo Android
-(as versões suportadas vão da 7 a 11)
+Para utilizar o app Donner basta baixar o arquivo apk mais recente na seção de releases do repositório 
